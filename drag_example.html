@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<head>
+<style>
+body {
+margin: 0px;
+padding: 0px;
+}
+</style>
+</head>
+<body>
+<div id="container"></div><div id="container2"></div><div id="container3"></div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js">
+</script>
+<script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.3.1.min.js"></script>
+
+<script src="models/messages.js"></script>
+<script src="models/anchor.js"></script>
+<script src="models/progressbar_filling.js"></script>
+<script src="models/ticks.js"></script>
+<!--
+<script src="models/progressbar_models.js"></script>
+-->
+<script src="models/progressbar.js"></script>
+<script>
+	
+	var progressbarObj = new Object;
+	progressbarObj['stageWidth'] = 500;
+	progressbarObj['stageHeight'] = 500;
+	progressbarObj['stageContainerID'] = 'container';
+	progressbarObj.tickDetails = new Object;
+	progressbarObj.tickDetails['numTicks'] = 10;
+	progressbarObj.progressbarFillDetails = new Object;
+	progressbarObj.progressbarFillDetails['clientNumMin'] = 0;
+	progressbarObj.progressbarFillDetails['clientNumMax'] = 387;
+	progressbarObj.progressbarFillDetails['clientNumCurrent'] = 58;
+	progressbarObj.progressbarFillDetails['fillColor'] = 'red';
+	progressbarObj.progressbarFillDetails['nameID'] = 'filling';
+	progressbarObj.progressbarOutlineDetails = new Object;
+  var progressbar = new Progressbar(progressbarObj);
+	
+	//This is an example of setting a new height, but
+	//	Need to make functions in Progressbar.js to make
+	//	This much simpler for clients to use
+	var b = progressbar.progressbarFill.setFillHeight(progressbar.progressbarFill.getClientNumToFillHeight(200));
+	//var h = 10;
+	
+  var progressbarObj2 = new Object;
+  progressbarObj2['stageWidth'] = 200;
+	progressbarObj2['stageHeight'] = 200;
+  progressbarObj2['stageContainerID'] = 'container2';
+  progressbarObj2.tickDetails = new Object;
+	progressbarObj2.tickDetails['numTicks'] = 10;
+	progressbarObj2.progressbarFillDetails = new Object;
+	progressbarObj2.progressbarFillDetails['clientNumMin'] = 0;
+	progressbarObj2.progressbarFillDetails['clientNumMax'] = 124;
+	progressbarObj2.progressbarFillDetails['clientNumCurrent'] = 58;
+	progressbarObj2.progressbarFillDetails['fillColor'] = 'red';
+	progressbarObj2.progressbarFillDetails['nameID'] = 'filling2';
+	progressbarObj2.progressbarOutlineDetails = new Object;
+  var progressbar2 = new Progressbar(progressbarObj2);
+	
+  //var progressbarObj3 = new Object;
+  progressbarObj3 = progressbarObj2;
+  progressbarObj2['stageWidth'] = 300;
+	progressbarObj2['stageHeight'] = 300;
+  progressbarObj3['stageContainerID'] = 'container3';
+  progressbarObj3.progressbarFillDetails = new Object;
+	progressbarObj3.progressbarFillDetails['clientNumCurrent'] = 88;
+	progressbarObj3.progressbarFillDetails['nameID'] = 'filling3';
+	progressbarObj3.progressbarOutlineDetails = new Object;
+  var progressbar3 = new Progressbar(progressbarObj3);
+  
+</script>
+</body>
+</html>
