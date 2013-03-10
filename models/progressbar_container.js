@@ -13,23 +13,23 @@ function ProgressbarContainer(progressbar, clientProgressbarObj) {
 
   this.progressbar.shapesLayer.add(this.progressbarGroup);
 
-	this.initiateSubObjects(clientProgressbarObj);
+	this.loadSubObjects(clientProgressbarObj);
+
+	var that = this;
+  this.imageObj.onload = function() {
+    that.initializeZIndexes();
+    that.progressbar.stage.draw();
+  };
+  this.imageObj.src = this.progressbarImgName;
 }
 
-ProgressbarContainer.prototype.initiateSubObjects = function(clientProgressbarObj) {
+ProgressbarContainer.prototype.loadSubObjects = function(clientProgressbarObj) {
   this.progressbarObject = new ProgressbarObject(this.progressbar, this, clientProgressbarObj);
 }
 
 ProgressbarContainer.prototype.loadDefaultAttributes = function() {
-  var stageWidth = 500;
-  var stageHeight = 500;
-  var stageContainerID = 'container';
-
   this.progressbarImgName = 'images/thermometer3.png';
   this.imageObj = new Image();
-  this.stageWidth = stageWidth;
-  this.stageHeight = stageHeight;
-  this.stageContainerID = stageContainerID;
   this.topMarginPercent = .10;
   this.bottomMarginPercent = .10;
 }
@@ -38,23 +38,14 @@ ProgressbarContainer.prototype.loadUserAttributes = function(clientProgressbarOb
   /*
     This should be separated by class
   */
-  if(clientProgressbarObj['stageWidth'])
-    this.stageWidth = clientProgressbarObj['stageWidth'];
-  if(clientProgressbarObj['stageHeight'])
-    this.stageHeight = clientProgressbarObj['stageHeight'];
-  if(clientProgressbarObj['stageContainerID'])
-    this.stageContainerID = clientProgressbarObj['stageContainerID'];
   if(clientProgressbarObj['progressbarImgName'])
     this.progressbarImgName = clientProgressbarObj['progressbarImgName'];
-
-  this.topMarginPercent = .10;
-  this.bottomMarginPercent = .10;
 }
 
 ProgressbarContainer.prototype.loadVariableSpecificAttributes = function() {
   this.heightVar = 1 - this.topMarginPercent - this.bottomMarginPercent;
-  this.progressbarHeight = this.stageHeight*this.heightVar;
-  this.progressbarWidth = this.stageWidth*.5;
+  this.progressbarHeight = this.progressbar.stageHeight*this.heightVar;
+  this.progressbarWidth = this.progressbar.stageWidth*.5;
   this.progressbarYOffset = this.progressbarHeight*-1;
   this.marginForError = 1;
   /*-------------------------------*/
@@ -73,5 +64,5 @@ ProgressbarContainer.prototype.getProgressbarOutlineImgName = function() {
 }
 
 ProgressbarContainer.prototype.initializeZIndexes = function() {
-  this.progressbarOutline.setZIndex(1);
+  this.progressbarObject.progressbarOutline.setZIndex(1);
 }
