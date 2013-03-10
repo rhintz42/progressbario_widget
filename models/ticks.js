@@ -1,38 +1,66 @@
-function TicksOrganizer(progressbar, numTicks) {
-  this.group = progressbar.progressbarGroup;
+function TicksOrganizer(progressbar, clientProgressbarObj) {
+  this.group = progressbar.progressbarContainer.progressbarGroup;
+
+  this.loadDefaultAttributes(progressbar);
+  this.loadUserAttributes(clientProgressbarObj);
 
   this.tickArray = new Array();
-  this.minY = progressbar.tickDetails.minY;
-  this.maxY = progressbar.tickDetails.maxY;
-  this.xOffset = progressbar.tickDetails.xOffset;
+
+  this.addTicks();
+}
+
+TicksOrganizer.prototype.loadDefaultAttributes = function(progressbar) {
+  var progressbarOutlineImgName = progressbar.progressbarContainer.getProgressbarOutlineImgName();
   
-  this.addTicks(numTicks);
+  this.tickOrganizerXOffset = this.getTickXOffset(progressbar, progressbarOutlineImgName);
+  this.tickOrganizerYOffset = this.getTickYOffset(progressbar, progressbarOutlineImgName);
+  this.tickOrganizerYMax = this.getTickMaxY(progressbar, progressbarOutlineImgName);
+  this.maxTickWidth = 10
+  this.maxTickHeight = 2;
+  this.tickStroke = '#666';
+  this.fillColor = 'black';
+  this.maxStrokeWidth = 2;
+  this.tickOrganizerName = 'tick';
+  this.numTicks = 10;
 }
 
-TicksOrganizer.prototype.defaultTickParam = function() {
-  var tick_param = new Object();
-  tick_param['TicksOrganizer'] = this;
-  tick_param['x'] = this.xOffset;
-  tick_param['y'] = this.minY;
-  tick_param['width'] = 10;
-  tick_param['height'] = 2;
-  tick_param['stroke'] = '#666';
-  tick_param['fill'] = 'black';
-  tick_param['strokeWidth'] = 2;
-  tick_param['name'] = 'tick';
+TicksOrganizer.prototype.loadUserAttributes = function(clientProgressbarObj) {
+  if(clientProgressbarObj.tickDetails['tickOrganizerXOffset'])
+    this.tickOrganizerXOffset = clientProgressbarObj.tickDetails['tickOrganizerXOffset'];
+  
+  if(clientProgressbarObj.tickDetails['tickOrganizerYOffset'])
+    this.tickOrganizerYOffset = clientProgressbarObj.tickDetails['tickOrganizerYOffset'];
+  
+  if(clientProgressbarObj.tickDetails['maxTickWidth'])
+    this.maxTickWidth = clientProgressbarObj.tickDetails['maxTickWidth'];
 
-  return tick_param;
+  if(clientProgressbarObj.tickDetails['maxTickHeight'])
+    this.maxTickHeight = clientProgressbarObj.tickDetails['maxTickHeight'];
+
+  if(clientProgressbarObj.tickDetails['tickStroke'])
+    this.tickStroke = clientProgressbarObj.tickDetails['tickStroke'];
+
+  if(clientProgressbarObj.tickDetails['fillColor'])
+    this.fillColor = clientProgressbarObj.tickDetails['fillColor'];
+
+  if(clientProgressbarObj.tickDetails['maxStrokeWidth'])
+    this.maxStrokeWidth = clientProgressbarObj.tickDetails['maxStrokeWidth'];
+
+  if(clientProgressbarObj.tickDetails['tickOrganizerName'])
+    this.tickOrganizerName = clientProgressbarObj.tickDetails['tickOrganizerName'];
+
 }
 
-TicksOrganizer.prototype.addTicks = function(numTicks) {
-  var tick_param = this.defaultTickParam();
+TicksOrganizer.prototype.addTicks = function() {
 
-  var difference = this.maxY - this.minY;
-  var spacing = difference / (numTicks-1);
+  var difference = this.tickOrganizerYMax - this.tickOrganizerYOffset;
+  var spacing = difference / (this.numTicks - 1);
 
-  for(var i = 0; i < numTicks; i++) {
-    tick_param['y'] = (-1*spacing)*i-this.minY;
-    this.tickArray[this.tickArray.length] = new Tick(tick_param);
+  for(var i = 0; i < this.numTicks; i++) {
+    var tickObj = new Object;
+    tickObj['yOffset'] = (-1*spacing)*i-this.tickOrganizerYOffset;
+
+    this.tickArray[this.tickArray.length] = new Tick(this, tickObj);
   }
 }
 
@@ -50,17 +78,50 @@ TicksOrganizer.prototype.addTicks = function(numTicks) {
  *    strokeWidth
  *    name
  */
-function Tick(tick_param) {
-  this.tick = new Kinetic.Rect({
-    x: tick_param['x'],
-    y: tick_param['y'],
-    width: tick_param['width'],
-    height: tick_param['height'],
-    stroke: tick_param['stroke'],
-    fill: tick_param['fill'],
-    strokeWidth: tick_param['strokeWidth'],
-    name: tick_param['name']
-  });
+function Tick(tickOrganizer, clientTickObj) {
 
-  tick_param['TicksOrganizer'].group.add(this.tick);
+  this.loadDefaultAttributes(tickOrganizer);
+  this.loadUserAttributes(clientTickObj);
+  tickOrganizer.group.add(this.tick);
+}
+
+
+Tick.prototype.loadDefaultAttributes = function(tickOrganizer) {
+  this.tick = new Kinetic.Rect({
+    x: tickOrganizer.tickOrganizerXOffset,
+    y: tickOrganizer.tickOrganizerYOffset,
+    width: tickOrganizer.maxTickWidth,
+    height: tickOrganizer.maxTickHeight,
+    stroke: tickOrganizer.tickStroke,
+    fill: tickOrganizer.fillColor,
+    strokeWidth: tickOrganizer.maxStrokeWidth,
+    name: tickOrganizer.tickOrganizerName
+  });
+}
+
+Tick.prototype.loadUserAttributes = function(clientTickObj) {
+  if(clientTickObj['yOffset'])
+    this.tick.setY(clientTickObj['yOffset']);
+}
+
+
+TicksOrganizer.prototype.getTickYOffset = function(progressbar, progressbarImgName) {
+  if(progressbarImgName == 'images/thermometer3.png') {
+    return 105*(progressbar.progressbarContainer.stageHeight/500);
+  }
+  return 0;
+}
+
+TicksOrganizer.prototype.getTickMaxY = function(progressbar, progressbarImgName) {
+  if(progressbarImgName == 'images/thermometer3.png') {
+    return 370*(progressbar.progressbarContainer.stageHeight/500);
+  }
+  return 0;
+}
+
+TicksOrganizer.prototype.getTickXOffset = function(progressbar, progressbarImgName) {
+  if(progressbarImgName == 'images/thermometer3.png') {
+    return 95*(progressbar.progressbarContainer.stageWidth/500);
+  }
+  return 0;
 }

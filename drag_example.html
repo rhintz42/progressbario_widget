@@ -17,6 +17,7 @@ padding: 0px;
 <script src="models/anchor.js"></script>
 <script src="models/progressbar_filling.js"></script>
 <script src="models/ticks.js"></script>
+<script src="models/progressbar_object.js"></script>
 <!--
 <script src="models/progressbar_models.js"></script>
 -->
@@ -42,8 +43,7 @@ padding: 0px;
 	//This is an example of setting a new height, but
 	//	Need to make functions in Progressbar.js to make
 	//	This much simpler for clients to use
-	var b = progressbar.progressbarFill.setFillHeight(progressbar.progressbarFill.getClientNumToFillHeight(20));
-	//var h = 10;
+	var b = progressbar.progressbarFilling.setFillHeight(progressbar.progressbarFilling.getClientNumToFillHeight(20));
 	
   var progressbarObj2 = new Object;
   progressbarObj2['stageWidth'] = 200;

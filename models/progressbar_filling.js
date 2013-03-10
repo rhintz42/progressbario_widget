@@ -1,31 +1,66 @@
 //function ProgressbarFilling(messagesContainer, groupContainer, x, y, width, initialHeight, fillMax, fillMin, clientMin, clientMax, fill, name) {
-function ProgressbarFilling(progressbarObj) {
-  this.stage = progressbarObj.progressbarGroup.getStage();
-  this.layer = progressbarObj.progressbarGroup.getLayer();
+function ProgressbarFilling(progressbar, clientProgressbarObj) {
+  var progressbarGroup = progressbar.progressbarContainer.progressbarGroup;
+  this.stage = progressbarGroup.getStage();
+  this.layer = progressbarGroup.getLayer();
 
-  this.clientNumMin = progressbarObj.progressbarFillDetails.clientNumMin;
-  this.clientNumMax = progressbarObj.progressbarFillDetails.clientNumMax;
-  this.fillMin = progressbarObj.progressbarFillDetails.fillMin;
-  this.fillMax = progressbarObj.adjustedProgressbarHeightMax;
-
-  //NEED TO GET INITIAL HEIHGT FROM USER. Put this into another method
-  this.initialHeight = this.getClientNumToFillHeight(progressbarObj.progressbarFillDetails.clientNumCurrent);
+  this.loadDefaultAttributes();
+  this.loadUserAttributes(clientProgressbarObj);
+  this.loadDynamicallyCreatedAttributes(progressbar);
 
   this.fill = new Kinetic.Rect({
-    x: progressbarObj.adjustedProgressbarWidthMin,
-    y: progressbarObj.adjustedProgressbarHeightMin,
-    width: progressbarObj.progressbarWidth,
+    x: this.xOffset,
+    y: this.yOffset,
+    width: progressbar.progressbarContainer.progressbarWidth,
     height: this.initialHeight,
-    fill: progressbarObj.progressbarFillDetails.fillColor,
-    name: progressbarObj.progressbarFillDetails.nameID,
+    fill: this.fillColor,
+    name: this.nameID,
     draggable: false
   });
-  this.messageContainer = progressbarObj.messagesContainer;
+
+  this.messageContainer = progressbar.messagesContainer;
   this.setFillHeight(this.initialHeight);
 
-  progressbarObj.progressbarGroup.add(this.fill);
-
+  progressbarGroup.add(this.fill);
   this.setMessages(this.initialHeight);
+}
+
+ProgressbarFilling.prototype.loadDefaultAttributes = function() {
+  this.clientNumMin = 0;
+  this.clientNumMax = 100;
+  this.clientNumCurrent = 50;
+  this.xOffset = 0;
+  this.yOffset = 0;
+  this.fillColor = 'red';
+  this.nameID = 'filling';
+}
+
+ProgressbarFilling.prototype.loadUserAttributes = function(clientProgressbarObj) {
+  if(clientProgressbarObj.progressbarFillDetails['clientNumMin'])
+    this.clientNumMin = clientProgressbarObj.progressbarFillDetails['clientNumMin'];
+  if(clientProgressbarObj.progressbarFillDetails['clientNumMax'])
+    this.clientNumMax = clientProgressbarObj.progressbarFillDetails['clientNumMax'];
+  if(clientProgressbarObj.progressbarFillDetails['clientNumCurrent'])
+    this.clientNumCurrent = clientProgressbarObj.progressbarFillDetails['clientNumCurrent'];
+
+  if(clientProgressbarObj.progressbarFillDetails['fillColor'])
+    this.fillColor = clientProgressbarObj.progressbarFillDetails['fillColor'];
+  if(clientProgressbarObj.progressbarFillDetails['nameID'])
+    this.nameID = clientProgressbarObj.progressbarFillDetails['nameID'];  
+}
+
+ProgressbarFilling.prototype.loadDynamicallyCreatedAttributes = function(progressbar) {
+  var progressbarOutlineImgName = progressbar.progressbarContainer.getProgressbarOutlineImgName();
+  var progressbarContainer = progressbar.progressbarContainer;
+
+  this.fillMin = this.getFillMin(progressbar, progressbarOutlineImgName);
+  this.fillMax = this.getFillMax(progressbar, progressbarOutlineImgName);
+  this.initialHeight = this.getClientNumToFillHeight(this.clientNumCurrent);
+
+  this.xOffset = 0;//progressbar.progressbarContainer.adjustedProgressbarWidthMin;
+  this.yOffset = progressbarContainer.adjustedProgressbarHeightMin;
+  this.heightMax = progressbarContainer.adjustedProgressbarHeightMax;
+  this.heightMin = progressbarContainer.adjustedProgressbarHeightMin;
 }
 
 ProgressbarFilling.prototype.getClientNumToFillHeight = function(clientHeight) {
@@ -33,7 +68,6 @@ ProgressbarFilling.prototype.getClientNumToFillHeight = function(clientHeight) {
   var fillRange = this.fillMax-this.fillMin;
   var clientRange = this.clientNumMax-this.clientNumMin;
   var clientAdjustedHeight = (clientHeight * (fillRange/clientRange)) - this.fillMin;
-  //clientHeight -= this.fillMin;
   return clientAdjustedHeight;
 }
 
@@ -84,4 +118,18 @@ ProgressbarFilling.prototype.inversePercentToClientNum = function(percent) {
 
 ProgressbarFilling.prototype.getClientNumMax = function() {
   return this.clientNumMax;
+}
+
+ProgressbarFilling.prototype.getFillMin = function(progressbar, progressbarImgName) {
+  if(progressbarImgName == 'images/thermometer3.png') {
+    return 105*(progressbar.progressbarContainer.stageHeight/500);
+  }
+  return 0;
+}
+
+ProgressbarFilling.prototype.getFillMax = function(progressbar, progressbarImgName) {
+  if(progressbarImgName == 'images/thermometer3.png') {
+    return 400*(progressbar.progressbarContainer.stageHeight/500);
+  }
+  return 0;
 }
