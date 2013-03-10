@@ -7,15 +7,8 @@ function Progressbar(clientProgressbarObj) {
 }
 
 Progressbar.prototype.loadStageAndLayer = function() {
-  this.stage = new Kinetic.Stage({
-    container: this.getStageContainerID(),
-    width: this.getStageWidth(),
-    height: this.getStageHeight()
-  });
-
-  this.shapesLayer = new Kinetic.Layer();
-  
-  this.stage.add(this.shapesLayer);
+  this.createStage();
+  this.createShapeLayer();
 }
 
 Progressbar.prototype.loadDefaultAttributes = function() {
@@ -66,9 +59,35 @@ Progressbar.prototype.setUserAttributes = function(clientProgressbarObj) {
     this.setLeftMarginPercent(clientProgressbarObj['leftMarginPercent']);
   
   CALL OBJECT BELOW THIS (PROGRESSBAR_CONTAINER) SET METHOD WITH CLIENTPROGRESSBAROBJ
-
+  
+  TO ADD TO NUMS, CAN HAVE VARS LIKE clientProgressbarObj['addToStageHeight']
 }
+
+NEED TO ALSO HAVE REGULAR SET METHODS, BECAUSE OTHERWISE IT'S HARD TO JUST CHANGE SIMPLE VALUES FOR THE USER
 */
+
+//-------------------------------------------------------------------
+/* CREATE METHODS */
+//-------------------------------------------------------------------
+Progressbar.prototype.createStage = function() {
+  this.stage = new Kinetic.Stage({
+    container: this.getStageContainerID(),
+    width: this.getStageWidth(),
+    height: this.getStageHeight()
+  });
+}
+
+Progressbar.prototype.createShapeLayer = function() {
+  this.shapesLayer = new Kinetic.Layer();
+
+  this.addToStage(this.shapesLayer);
+}
+//-------------------------------------------------------------------
+/* ADD METHODS */
+//-------------------------------------------------------------------
+Progressbar.prototype.addToStage = function(obj) {
+  this.stage.add(obj);
+}
 
 //-----------------------------------------------------------------
 /* SET METHODS */

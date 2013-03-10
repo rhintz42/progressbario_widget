@@ -1,18 +1,12 @@
-function ProgressbarObject(progressbar, progressbarContainer, clientProgressbarObj) {
-	this.progressbar = progressbar;
+function ProgressbarObject(progressbarContainer, clientProgressbarObj) {
 	this.progressbarContainer = progressbarContainer;
 
 	this.initiateSubObjects(clientProgressbarObj);
 }
 
-ProgressbarObject.prototype.initiateSubObjects = function(clientProgressbarObj) {
-	this.loadProgressbarOutline();
-  this.loadProgressbarFilling(clientProgressbarObj);
-  this.loadProgressbarTicks(clientProgressbarObj);
-}
-
 /*This needs to be put into a separate class*/
 ProgressbarObject.prototype.loadProgressbarOutline = function() {
+  
   this.progressbarOutline = new Kinetic.Image({
     x: 0,
     y: this.progressbarContainer.progressbarYOffset,
@@ -22,6 +16,7 @@ ProgressbarObject.prototype.loadProgressbarOutline = function() {
   });
 
   this.progressbarContainer.progressbarGroup.add(this.progressbarOutline);
+  
 }
 
 ProgressbarObject.prototype.loadProgressbarFilling = function(clientProgressbarObj) {
@@ -29,13 +24,19 @@ ProgressbarObject.prototype.loadProgressbarFilling = function(clientProgressbarO
 }
 
 ProgressbarObject.prototype.loadProgressbarTicks = function(clientProgressbarObj) {
-  this.ticksOrganizer = new TicksOrganizer(this.progressbar, this.progressbarContainer, clientProgressbarObj);
+  this.ticksOrganizer = new TicksOrganizer(this.progressbarContainer, clientProgressbarObj);
 }
 
+ProgressbarObject.prototype.initiateSubObjects = function(clientProgressbarObj) {
+  this.loadProgressbarOutline();
+  this.loadProgressbarFilling(clientProgressbarObj);
+  this.loadProgressbarTicks(clientProgressbarObj);
+}
+/*
+ProgressbarObject.prototype.setProgressbarObject(clientProgressbarObj) {
 
-
-
-
+}
+*/
 
 //---------------------------------------------------------------------
 /* GET METHODS */
@@ -46,6 +47,10 @@ ProgressbarObject.prototype.getProgressbarContainer = function() {
 
 ProgressbarObject.prototype.getProgressbarGroup = function() {
   return this.progressbarContainer.progressbarGroup;
+}
+
+ProgressbarObject.prototype.getProgressbarOutline = function() {
+  return this.progressbarOutline;
 }
 
 ProgressbarObject.prototype.getProgressbarFilling = function() {

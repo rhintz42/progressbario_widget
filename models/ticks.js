@@ -1,9 +1,8 @@
-function TicksOrganizer(progressbar, progressbarContainer, clientProgressbarObj) {
-  this.progressbar = progressbar;
+function TicksOrganizer(progressbarContainer, clientProgressbarObj) {
   this.progressbarContainer = progressbarContainer;
   this.group = progressbarContainer.progressbarGroup;
 
-  this.loadDefaultAttributes(progressbar);
+  this.loadDefaultAttributes();
   this.loadUserAttributes(clientProgressbarObj);
 
   this.tickArray = new Array();
@@ -11,12 +10,12 @@ function TicksOrganizer(progressbar, progressbarContainer, clientProgressbarObj)
   this.addTicks();
 }
 
-TicksOrganizer.prototype.loadDefaultAttributes = function(progressbar) {
+TicksOrganizer.prototype.loadDefaultAttributes = function() {
   var progressbarOutlineImgName = this.progressbarContainer.getProgressbarOutlineImgName();
   
-  this.tickOrganizerXOffset = this.getTickXOffset(progressbar, progressbarOutlineImgName);
-  this.tickOrganizerYOffset = this.getTickYOffset(progressbar, progressbarOutlineImgName);
-  this.tickOrganizerYMax = this.getTickMaxY(progressbar, progressbarOutlineImgName);
+  this.tickOrganizerXOffset = this.getTickXOffset(progressbarOutlineImgName);
+  this.tickOrganizerYOffset = this.getTickYOffset(progressbarOutlineImgName);
+  this.tickOrganizerYMax = this.getTickMaxY(progressbarOutlineImgName);
   this.maxTickWidth = 10
   this.maxTickHeight = 2;
   this.tickStroke = '#666';
@@ -107,23 +106,32 @@ Tick.prototype.loadUserAttributes = function(clientTickObj) {
 }
 
 
-TicksOrganizer.prototype.getTickYOffset = function(progressbar, progressbarImgName) {
+TicksOrganizer.prototype.getTickYOffset = function(progressbarImgName) {
+  if(progressbarImgName == 'images/thermometer.png') {
+    return 105*(this.progressbarContainer.progressbarHeight/400);
+  }
   if(progressbarImgName == 'images/thermometer3.png') {
-    return 105*(progressbar.stageHeight/500);
+    return 105*(this.progressbarContainer.progressbarHeight/400);
   }
   return 0;
 }
 
-TicksOrganizer.prototype.getTickMaxY = function(progressbar, progressbarImgName) {
+TicksOrganizer.prototype.getTickMaxY = function(progressbarImgName) {
+  if(progressbarImgName == 'images/thermometer.png') {
+    return 370*(this.progressbarContainer.progressbarHeight/400);
+  }
   if(progressbarImgName == 'images/thermometer3.png') {
-    return 370*(progressbar.stageHeight/500);
+    return 370*(this.progressbarContainer.progressbarHeight/400);
   }
   return 0;
 }
 
-TicksOrganizer.prototype.getTickXOffset = function(progressbar, progressbarImgName) {
+TicksOrganizer.prototype.getTickXOffset = function(progressbarImgName) {
+  if(progressbarImgName == 'images/thermometer.png') {
+    return 95*(this.progressbarContainer.progressbarWidth/250);
+  }
   if(progressbarImgName == 'images/thermometer3.png') {
-    return 95*(progressbar.stageWidth/500);
+    return 95*(this.progressbarContainer.progressbarWidth/250);
   }
   return 0;
 }

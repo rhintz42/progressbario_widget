@@ -5,7 +5,7 @@ function ProgressbarFilling(progressbarObject, clientProgressbarObj) {
   
   this.loadDefaultAttributes();
   this.loadUserAttributes(clientProgressbarObj);
-  this.loadDynamicallyCreatedAttributes(progressbar);
+  this.loadDynamicallyCreatedAttributes();
 
   this.loadFill();
 }
@@ -34,12 +34,12 @@ ProgressbarFilling.prototype.loadUserAttributes = function(clientProgressbarObj)
     this.setNameID(clientProgressbarObj.progressbarFillDetails['nameID']);  
 }
 
-ProgressbarFilling.prototype.loadDynamicallyCreatedAttributes = function(progressbar) {
+ProgressbarFilling.prototype.loadDynamicallyCreatedAttributes = function() {
   var progressbarOutlineImgName = this.progressbarContainer.getProgressbarOutlineImgName();
   var progressbarContainer = this.progressbarContainer;
 
-  this.setFillMinYOffset(progressbar, progressbarOutlineImgName);
-  this.setFillMaxYOffset(progressbar, progressbarOutlineImgName);
+  this.setFillMinYOffset(progressbarOutlineImgName);
+  this.setFillMaxYOffset(progressbarOutlineImgName);
   this.setInitialHeight(this.getClientNumCurrent());
 
   this.setXOffset(0);//progressbar.progressbarContainer.adjustedProgressbarWidthMin;
@@ -132,7 +132,12 @@ ProgressbarFilling.prototype.setFillHeight = function(height) {
 }
 
 
-ProgressbarFilling.prototype.setFillMinYOffset = function(progressbar, progressbarImgName) {
+ProgressbarFilling.prototype.setFillMinYOffset = function(progressbarImgName) {
+  if(progressbarImgName == 'images/thermometer.png') {
+    var maxHeight = this.progressbarContainer.progressbarHeight;
+    this.fillMinYOffset = 105*(maxHeight/400);
+    return;
+  }
   if(progressbarImgName == 'images/thermometer3.png') {
     var maxHeight = this.progressbarContainer.progressbarHeight;
     this.fillMinYOffset = 105*(maxHeight/400);
@@ -141,10 +146,15 @@ ProgressbarFilling.prototype.setFillMinYOffset = function(progressbar, progressb
   this.fillMinYOffset = 0;
 }
 
-ProgressbarFilling.prototype.setFillMaxYOffset = function(progressbar, progressbarImgName) {
+ProgressbarFilling.prototype.setFillMaxYOffset = function(progressbarImgName) {
+  if(progressbarImgName == 'images/thermometer.png') {
+    var maxHeight = this.progressbarContainer.progressbarHeight;
+    this.fillMaxYOffset = 397*(maxHeight/400);//This should be determined by group height
+    return;
+  }
   if(progressbarImgName == 'images/thermometer3.png') {
     var maxHeight = this.progressbarContainer.progressbarHeight;
-    this.fillMaxYOffset = 400*(maxHeight/400);//This should be determined by group height
+    this.fillMaxYOffset = 397*(maxHeight/400);//This should be determined by group height
     return;
   }
   this.fillMaxYOffset = 0;
