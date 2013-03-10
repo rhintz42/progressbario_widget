@@ -5,6 +5,14 @@ function ProgressbarContainer(progressbar, clientProgressbarObj) {
 	this.loadUserAttributes(clientProgressbarObj);
 	this.loadVariableSpecificAttributes();
 
+	this.progressbarGroup = new Kinetic.Group({
+    x: this.progressbarWidth,
+    y: this.progressbarHeight/(1-this.topMarginPercent),
+    draggable: false
+  });
+
+  this.progressbar.shapesLayer.add(this.progressbarGroup);
+
 	this.initiateSubObjects(clientProgressbarObj);
 }
 

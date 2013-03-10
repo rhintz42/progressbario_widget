@@ -2,10 +2,10 @@ function ProgressbarObject(progressbar, progressbarContainer, clientProgressbarO
 	this.progressbar = progressbar;
 	this.progressbarContainer = progressbarContainer;
 
-	//this.initiateSubObjects();
+	this.initiateSubObjects(clientProgressbarObj);
 }
 
-ProgressbarObject.prototype.initiateSubObjects = function() {
+ProgressbarObject.prototype.initiateSubObjects = function(clientProgressbarObj) {
 	this.loadProgressbarOutline();
   this.loadProgressbarFilling(clientProgressbarObj);
   this.loadProgressbarTicks(clientProgressbarObj);
@@ -25,10 +25,10 @@ ProgressbarObject.prototype.loadProgressbarOutline = function() {
 }
 
 ProgressbarObject.prototype.loadProgressbarFilling = function(clientProgressbarObj) {
-  this.progressbarFilling = new ProgressbarFilling(this.progressbar, clientProgressbarObj);
+  this.progressbarFilling = new ProgressbarFilling(this.progressbar, this.progressbarContainer, clientProgressbarObj);
 }
 
 ProgressbarObject.prototype.loadProgressbarTicks = function(clientProgressbarObj) {
   //Change the magic number here to something the user passes in
-  this.ticksOrganizer = new TicksOrganizer(this.progressbar, clientProgressbarObj, 10);
+  this.ticksOrganizer = new TicksOrganizer(this.progressbar, this.progressbarContainer, clientProgressbarObj);
 }

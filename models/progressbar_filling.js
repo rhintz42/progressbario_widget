@@ -1,6 +1,7 @@
 //function ProgressbarFilling(messagesContainer, groupContainer, x, y, width, initialHeight, fillMax, fillMin, clientMin, clientMax, fill, name) {
-function ProgressbarFilling(progressbar, clientProgressbarObj) {
-  var progressbarGroup = progressbar.progressbarContainer.progressbarGroup;
+function ProgressbarFilling(progressbar, progressbarContainer, clientProgressbarObj) {
+  var progressbarGroup = progressbarContainer.progressbarGroup;
+  this.progressbarContainer = progressbarContainer;
   this.stage = progressbarGroup.getStage();
   this.layer = progressbarGroup.getLayer();
 
@@ -11,7 +12,7 @@ function ProgressbarFilling(progressbar, clientProgressbarObj) {
   this.fill = new Kinetic.Rect({
     x: this.xOffset,
     y: this.yOffset,
-    width: progressbar.progressbarContainer.progressbarWidth,
+    width: progressbarContainer.progressbarWidth,
     height: this.initialHeight,
     fill: this.fillColor,
     name: this.nameID,
@@ -22,7 +23,7 @@ function ProgressbarFilling(progressbar, clientProgressbarObj) {
   this.setFillHeight(this.initialHeight);
 
   progressbarGroup.add(this.fill);
-  this.setMessages(this.initialHeight);
+  //this.setMessages(this.initialHeight);
 }
 
 ProgressbarFilling.prototype.loadDefaultAttributes = function() {
@@ -50,8 +51,8 @@ ProgressbarFilling.prototype.loadUserAttributes = function(clientProgressbarObj)
 }
 
 ProgressbarFilling.prototype.loadDynamicallyCreatedAttributes = function(progressbar) {
-  var progressbarOutlineImgName = progressbar.progressbarContainer.getProgressbarOutlineImgName();
-  var progressbarContainer = progressbar.progressbarContainer;
+  var progressbarOutlineImgName = this.progressbarContainer.getProgressbarOutlineImgName();
+  var progressbarContainer = this.progressbarContainer;
 
   this.fillMin = this.getFillMin(progressbar, progressbarOutlineImgName);
   this.fillMax = this.getFillMax(progressbar, progressbarOutlineImgName);
@@ -80,9 +81,9 @@ ProgressbarFilling.prototype.setFillHeight = function(height) {
 
   this.fill.setSize(this.width, height);
 
-  this.setMessages(height);
+  //this.setMessages(height);
 }
-
+/*
 ProgressbarFilling.prototype.setMessages = function(height) {
   if(this.clientNumMax == undefined) {
     return
@@ -93,6 +94,7 @@ ProgressbarFilling.prototype.setMessages = function(height) {
   this.messageContainer.setMessageText('pagesLeft', this.inversePercentToClientNum(this.getPercent(height)));
   this.messageContainer.setMessageText('pagesTotal', this.getClientNumMax());
 }
+*/
 
 ProgressbarFilling.prototype.getPercent = function(height) {
   return this.heightToPercent(height);
@@ -122,14 +124,14 @@ ProgressbarFilling.prototype.getClientNumMax = function() {
 
 ProgressbarFilling.prototype.getFillMin = function(progressbar, progressbarImgName) {
   if(progressbarImgName == 'images/thermometer3.png') {
-    return 105*(progressbar.progressbarContainer.stageHeight/500);
+    return 105*(progressbar.stageHeight/500);
   }
   return 0;
 }
 
 ProgressbarFilling.prototype.getFillMax = function(progressbar, progressbarImgName) {
   if(progressbarImgName == 'images/thermometer3.png') {
-    return 400*(progressbar.progressbarContainer.stageHeight/500);
+    return 400*(progressbar.stageHeight/500);
   }
   return 0;
 }
