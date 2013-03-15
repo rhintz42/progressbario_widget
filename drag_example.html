@@ -18,10 +18,62 @@ padding: 0px;
 		Set Maximum Value: <input type="text" id="maximumNum" onchange="changeMaximumNum()">
 	</div>	
 
-<div id="container" style="float: left; border-style: solid; border-width:medium"></div>
+	<div id="container" style="float: left; border-style: solid; border-width:medium"></div>
+	<div style="clear: both;"></div>
 
+	<div id="generatedHtml">
+		<div id="includeKineticJS">
+			&lt;script src=&quot;http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.3.1.min.js&quot;&gt;&lt;/script&gt;
+		</div>
+		
+		<div class="spacer" style="clear: both"></div>
+		
+		<div id="includeProgressbarJS">
+			&lt;script src=&quot;models/progressbar_models.js&quot;&gt;&lt;/script&gt;
+		</div>
+
+		<div id="startScriptTag">
+			&lt;script&gt;
+		</div>
+		
+		<div id="initiateProgressbarObj" style="margin-left: 0px;">
+			&nbsp;&nbsp;&nbsp;&nbsp;var progressbarObj = new Object;
+		</div>
+
+		<div id="initiateProgressbarFillDetails">
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			progressbarObj.progressbarFillDetails = new Object;
+		</div>
+		
+		<div id="progressbarFillDetailsNumCurrent"><!--
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			progressbarObj.progressbarFillDetails[&#039clientNumCurrent'] = 58;
+			-->
+		</div>
+
+		<div id="progressbarFillDetailsNumMax"><!--
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			progressbarObj.progressbarFillDetails[&#039clientNumCurrent'] = 58;
+			-->
+		</div>
+
+		<div id="result2"></div>
+		
+		<div id="result3"></div>
+		
+		<div id="result4"></div>
+		<div id="initiateProgressbar">
+			&nbsp;&nbsp;&nbsp;&nbsp;var progressbar = new Progressbar(progressbarObj);
+		</div>
+		
+		<div id="endScriptTag">
+			&lt;\script&gt;
+		</div>
+	</div>
+<!--
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js">
 </script>
+-->
 <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.3.1.min.js"></script>
 
 <script src="models/message.js"></script>
@@ -37,30 +89,40 @@ padding: 0px;
 <script src="models/progressbar_container.js"></script>
 <script src="models/progressbar.js"></script>
 
-
 <script>
 	function changeCurrentNum() {
 		var currentNumObj = document.getElementById("currentNum");
 		var currentNum = parseInt(currentNumObj.value);
-		progressbar0.setClientNumCurrent(currentNum);
+
+		var enterNum = document.getElementById("progressbarFillDetailsNumCurrent");
+		
+		enterNum.innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;' + "progressbarObj.progressbarFillDetails['clientNumCurrent'] = " + currentNum + ";";
+
+		progressbar.setClientNumCurrent(currentNum);
 	};
 
 	function changeMinimumNum() {
 		var minimumNumObj = document.getElementById("minimumNum");
 		var minimumNum = parseInt(minimumNumObj.value);
-		//progressbar0.setClientNumCurrent(minimumNum);
+		//progressbar.setClientNumCurrent(minimumNum);
 	};
 
 	function changeMaximumNum() {
 		var maximumNumObj = document.getElementById("maximumNum");
 		var maximumNum = parseInt(maximumNumObj.value);
-		progressbar0.setMaximumValue(maximumNum);
+		progressbar.setMaximumValue(maximumNum);
+
+
+		var enterNum = document.getElementById("progressbarFillDetailsNumMax");
+		
+		enterNum.innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;' + "progressbarObj.progressbarFillDetails['clientNumMax'] = 100;";
 	};
 
-	var progressbarObj0 = new Object;
-	var progressbar0 = new Progressbar(progressbarObj0);
-	//progressbar0.setClientNumCurrent(10);
-	
+	var progressbarObj = new Object;
+	var progressbar = new Progressbar(progressbarObj);
+	progressbar.setClientNumCurrent(10);
+
+
 </script>
 </body>
 </html>
