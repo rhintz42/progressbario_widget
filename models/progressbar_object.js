@@ -1,74 +1,255 @@
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+///////////////////////////////////////////////////////////////////////////////
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+// PUBLIC METHODS //
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+///////////////////////////////////////////////////////////////////////////////
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// CONSTRUCTOR METHODS
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
 function ProgressbarObject(progressbarContainer, clientProgressbarObj) {
-	this.progressbarContainer = progressbarContainer;
+  this._setProgressbarContainer(progressbarContainer);
 
-	this.initiateSubObjects(clientProgressbarObj);
+  this._createDefaultAttributes();
+  this._setUserAttributes(clientProgressbarObj);
+
+  this._createSubObjects(clientProgressbarObj);
+
+  this._loadImage();
 }
 
-/*This needs to be put into a separate class*/
-ProgressbarObject.prototype.loadProgressbarOutline = function() {
-  
-  this.progressbarOutline = new Kinetic.Image({
-    x: 0,
-    y: this.progressbarContainer.progressbarYOffset,
-    image: this.progressbarContainer.imageObj,
-    width: this.progressbarContainer.progressbarWidth,
-    height: this.progressbarContainer.progressbarHeight
-  });
 
-  this.progressbarContainer.progressbarGroup.add(this.progressbarOutline);
-  
+
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// ACCESSOR METHODS
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+//-----------------------------------------------------------------------------
+// GET METHODS //
+//-----------------------------------------------------------------------------
+
+ProgressbarObject.prototype.getAdjustedProgressbarHeightMax = function() {
+  return this.progressbarContainer.getAdjustedProgressbarHeightMax();
 }
 
-ProgressbarObject.prototype.loadProgressbarFilling = function(clientProgressbarObj) {
-  this.progressbarFilling = new ProgressbarFilling(this, clientProgressbarObj);
+ProgressbarObject.prototype.getAdjustedProgressbarHeightMin = function() {
+  return this.progressbarContainer.getAdjustedProgressbarHeightMin();
 }
 
-ProgressbarObject.prototype.loadProgressbarTicks = function(clientProgressbarObj) {
-  this.ticksOrganizer = new TicksOrganizer(this.progressbarContainer, clientProgressbarObj);
+ProgressbarObject.prototype.getImageObj = function() {
+  return this.imageObj;
 }
-
-ProgressbarObject.prototype.initiateSubObjects = function(clientProgressbarObj) {
-  this.loadProgressbarOutline();
-  this.loadProgressbarFilling(clientProgressbarObj);
-  this.loadProgressbarTicks(clientProgressbarObj);
-}
-/*
-ProgressbarObject.prototype.setProgressbarObject(clientProgressbarObj) {
-
-}
-*/
-
-//---------------------------------------------------------------------
-/* GET METHODS */
-//---------------------------------------------------------------------
 ProgressbarObject.prototype.getProgressbarContainer = function() {
   return this.progressbarContainer;
-}
-
-ProgressbarObject.prototype.getProgressbarGroup = function() {
-  return this.progressbarContainer.progressbarGroup;
-}
-
-ProgressbarObject.prototype.getProgressbarOutline = function() {
-  return this.progressbarOutline;
 }
 
 ProgressbarObject.prototype.getProgressbarFilling = function() {
   return this.progressbarFilling;
 }
 
-ProgressbarObject.prototype.getTicksOrganizer = function() {
-  return this.ticksOrganizer;
+ProgressbarObject.prototype.getProgressbarGroup = function() {
+  return this.progressbarContainer.getProgressbarGroup();
+}
+
+ProgressbarObject.prototype.getProgressbarHeight = function() {
+  return this.progressbarContainer.getProgressbarHeight();
+}
+
+ProgressbarObject.prototype.getProgressbarImgName = function() {
+  return this.getProgressbarOutlineImgName();
+}
+
+ProgressbarObject.prototype.getProgressbarOutline = function() {
+  return this.progressbarOutline;
+}
+
+ProgressbarObject.prototype.getProgressbarOutlineImgName = function() {
+  return this.progressbarImgName;
 }
 
 ProgressbarObject.prototype.getProgressbarTicks = function() {
   return this.getTicksOrganizer();
 }
 
-//-------------------------------------------------------------------
-/* ADD METHODS */
-//-------------------------------------------------------------------
+ProgressbarObject.prototype.getProgressbarWidth = function() {
+  return this.progressbarContainer.getProgressbarWidth();
+}
+
+ProgressbarObject.prototype.getTicksOrganizer = function() {
+  return this.ticksOrganizer;
+}
+
+
+
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// MODIFIER METHODS
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+//-----------------------------------------------------------------------------
+// ADD METHODS //
+//-----------------------------------------------------------------------------
+
 ProgressbarObject.prototype.addToProgressbarObjGroup = function(obj) {
-  var progressbarGroup = this.getProgressbarGroup();
-  progressbarGroup.add(obj);
+  this.progressbarContainer.addToProgressbarGroup(obj);
+}
+
+//-----------------------------------------------------------------------------
+// CREATE METHODS //
+//-----------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------
+// LOAD METHODS //
+//-----------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------
+// SET METHODS //
+//-----------------------------------------------------------------------------
+
+ProgressbarObject.prototype.setProgressbarObject = function(clientPorgressbarObj) {
+  this._setUserAttributes(clientPorgressbarObj);
+}
+
+ProgressbarObject.prototype._setProgressbarOutline = function(progressbarOutline) {
+  this.progressbarOutline = progressbarOutline;
+}
+
+ProgressbarObject.prototype.setProgressbarOutlineImgName = function(imgName) {
+  this.progressbarImgName = imgName;
+}
+
+
+
+
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+///////////////////////////////////////////////////////////////////////////////
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+// PUBLIC METHODS //
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+///////////////////////////////////////////////////////////////////////////////
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// ACCESSOR METHODS
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+//-----------------------------------------------------------------------------
+// GET METHODS //
+//-----------------------------------------------------------------------------
+
+
+
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// MODIFIER METHODS
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+//-----------------------------------------------------------------------------
+// ADD METHODS //
+//-----------------------------------------------------------------------------
+
+
+//-----------------------------------------------------------------------------
+// CREATE METHODS //
+//-----------------------------------------------------------------------------
+
+ProgressbarObject.prototype._createDefaultAttributes = function() {
+  this._createImgObj('images/thermometer3.png');
+}
+
+ProgressbarObject.prototype._createImgObj = function(imgName) {
+  this.setProgressbarOutlineImgName(imgName);
+  this.imageObj = new Image();
+}
+
+ProgressbarObject.prototype._createProgressbarFilling = function(clientProgressbarFillDetails) {
+  this.progressbarFilling = new ProgressbarFilling(this, clientProgressbarFillDetails);
+}
+
+/*This needs to be put into a separate class*/
+ProgressbarObject.prototype._createProgressbarOutline = function() {
+  
+  this.progressbarOutline = new Kinetic.Image({
+    x: 0,
+    y: this.progressbarContainer.progressbarYOffset,
+    image: this.getImageObj(),
+    width: this.progressbarContainer.getProgressbarWidth(),
+    height: this.progressbarContainer.getProgressbarHeight()
+  });
+
+  this.addToProgressbarObjGroup(this.getProgressbarOutline());
+  
+}
+
+ProgressbarObject.prototype._createProgressbarTicks = function(clientTickDetails) {
+  this.ticksOrganizer = new TicksOrganizer(this, clientTickDetails);
+}
+
+ProgressbarObject.prototype._createSubObjects = function(clientProgressbarObj) {
+  this._createProgressbarOutline();
+  this._createProgressbarFilling(clientProgressbarObj.progressbarFillDetails);
+  this._createProgressbarTicks(clientProgressbarObj.tickDetails);
+}
+
+
+//-----------------------------------------------------------------------------
+// LOAD METHODS //
+//-----------------------------------------------------------------------------
+
+ProgressbarObject.prototype._loadImage = function() {
+  //this.imageObj = new Image();
+  var that = this;
+  this.imageObj.onload = function() {
+    that._loadZIndexes();
+    that.progressbarContainer.drawStage();
+  };
+  this.imageObj.src = this.getProgressbarOutlineImgName();
+}
+
+ProgressbarObject.prototype._loadZIndexes = function() {
+  this.progressbarOutline.setZIndex(1);
+}
+
+
+//-----------------------------------------------------------------------------
+// SET METHODS //
+//-----------------------------------------------------------------------------
+
+ProgressbarObject.prototype._setProgressbarContainer = function(progressbarContainer) {
+  this.progressbarContainer = progressbarContainer;
+}
+
+ProgressbarObject.prototype._setProgressbarFilling = function(progressbarFilling) {
+  this.progressbarFilling = progressbarFilling;
+}
+
+ProgressbarObject.prototype.setProgressbarImgName = function(imgName) {
+  this.setProgressbarOutlineImgName(imgName);
+}
+
+ProgressbarObject.prototype._setTicksOrganizer = function(ticksOrganizer) {
+  this.ticksOrganizer = ticksOrganizer;
+}
+
+ProgressbarObject.prototype._setUserAttributes = function(clientProgressbarObj) {
+  if(clientProgressbarObj == undefined)
+    return;
+
+  if(clientProgressbarObj['progressbarImgName'])
+    this.setProgressbarOutlineImgName(clientProgressbarObj['progressbarImgName']);
 }

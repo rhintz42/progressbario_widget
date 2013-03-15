@@ -1,114 +1,77 @@
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+///////////////////////////////////////////////////////////////////////////////
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+// PUBLIC METHODS //
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+///////////////////////////////////////////////////////////////////////////////
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// CONSTRUCTOR METHODS
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
 function ProgressbarContainer(progressbar, clientProgressbarObj) {
-	this.progressbar = progressbar;
+	this._setProgressbar(progressbar);
 
-	this.loadDefaultAttributes();
-	this.loadUserAttributes(clientProgressbarObj);
-	this.loadVariableSpecificAttributes();
+	this._createDefaultAttributes();
+	this._setUserAttributes(clientProgressbarObj);
+	this._setVariableSpecificAttributes();
 
-	this.createProgressbarGroup();
+	this._createProgressbarGroup();
 
-	this.loadSubObjects(clientProgressbarObj);
-
-  this.onImageLoad();
+	this._createSubObjects(clientProgressbarObj);
 }
 
-ProgressbarContainer.prototype.createProgressbarGroup = function() {
-	this.progressbarGroup = new Kinetic.Group({
-	  x: this.getProgressbarWidth(),
-    y: this.getProgressbarHeight()/(1-this.getTopMarginPercent()),//getInverse
-    draggable: false
-  });
 
-  this.addToShapesLayer(this.progressbarGroup);
+
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// ACCESSOR METHODS
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+//-----------------------------------------------------------------------------
+// DRAW METHODS //
+//-----------------------------------------------------------------------------
+
+ProgressbarContainer.prototype.drawStage = function() {
+	this.progressbar.stage.draw();
 }
 
-ProgressbarContainer.prototype.addToShapesLayer = function(group) {
-	this.progressbar.shapesLayer.add(group);
+
+//-----------------------------------------------------------------------------
+// GET METHODS //
+//-----------------------------------------------------------------------------
+
+ProgressbarContainer.prototype.getAdjustedProgressbarHeightMax = function() {
+	return this.adjustedProgressbarHeightMax;
 }
 
-ProgressbarContainer.prototype.onImageLoad = function() {
-	var that = this;
-  this.imageObj.onload = function() {
-    that.initializeZIndexes();
-    that.progressbar.stage.draw();
-  };
-  this.imageObj.src = this.progressbarImgName;
+ProgressbarContainer.prototype.getAdjustedProgressbarHeightMin = function() {
+	return this.adjustedProgressbarHeightMin;
 }
 
-ProgressbarContainer.prototype.loadSubObjects = function(clientProgressbarObj) {
-  this.progressbarObject = new ProgressbarObject(this, clientProgressbarObj);
+ProgressbarContainer.prototype.getAdjustedProgressbarWidthMin = function() {
+	return this.adjustedProgressbarWidthMin;
 }
 
-ProgressbarContainer.prototype.loadDefaultAttributes = function() {
-  this.createImgObj('images/thermometer3.png');
-  this.setTopMarginPercent(.10);
-  this.setBottomMarginPercent(.10);
-}
-
-ProgressbarContainer.prototype.loadUserAttributes = function(clientProgressbarObj) {
-  if(clientProgressbarObj['progressbarImgName'])
-    this.setProgressbarOutlineImgName(clientProgressbarObj['progressbarImgName']);
-}
-
-ProgressbarContainer.prototype.loadVariableSpecificAttributes = function() {
-  this.setContainerHeightPercent(1 - this.getTopMarginPercent() - this.getBottomMarginPercent());
-  this.setProgressbarHeight(this.progressbar.getStageHeight()*this.getContainerHeightPercent());
-  this.setProgressbarWidth(this.progressbar.getStageWidth()*.5);
-  this.setProgressbarYOffset(this.getProgressbarHeight()*-1);
-  this.setMarginForError(1);
-  /*-------------------------------*/
-  this.setAdjustedProgressbarWidthMin(0);//Possibly put these in initializeAdjusted...
-  this.setAdjustedProgressbarHeightMax(this.getProgressbarHeight()-this.getMarginForError()*2);
-  this.setAdjustedProgressbarHeightMin(0-this.getMarginForError());
-  /*-------------------------------*/
-  this.setBeginningProgressbarHeight(this.getAdjustedProgressbarHeightMax());
-}
-/*
-These methods should be in the progressbarOutline class
-*/
-
-ProgressbarContainer.prototype.getProgressbarOutlineImgName = function() {
-	return this.progressbarImgName;
-}
-
-ProgressbarContainer.prototype.initializeZIndexes = function() {
-  this.progressbarObject.progressbarOutline.setZIndex(1);
-}
-
-ProgressbarContainer.prototype.createImgObj = function(imgName) {
-  this.setProgressbarOutlineImgName('images/thermometer3.png');
-  this.imageObj = new Image();
-}
-
-//-------------------------------------------------------------------
-// GET METHODS
-//-------------------------------------------------------------------
-ProgressbarContainer.prototype.getTopMarginPercent = function() {
-	return this.topMarginPercent;
-}
-
-ProgressbarContainer.prototype.getBottomMarginPercent = function() {
-	return this.bottomMarginPercent;
-}
-
-ProgressbarContainer.prototype.getRightMarginPercent = function() {
-	return this.rightMarginPercent;
-}
-
-ProgressbarContainer.prototype.getLeftMarginPercent = function() {
-	return this.leftMarginPercent;
-}
-
-ProgressbarContainer.prototype.getProgressbarOutlineImgName = function() {
-	return this.progressbarImgName;
-}
-
-ProgressbarContainer.prototype.getProgressbarImgName = function() {
-	return this.getProgressbarOutlineImgName();
+ProgressbarContainer.prototype.getBeginningProgressbarHeight = function() {
+	return this.beginningProgressbarHeight;
 }
 
 ProgressbarContainer.prototype.getContainerHeightPercent = function() {
 	return this.containerHeightPercent;
+}
+
+ProgressbarContainer.prototype.getErrorMargin = function() {
+	return this.marginForError;
+}
+
+ProgressbarContainer.prototype.getProgressbarGroup = function() {
+	return this.progressbarGroup;
 }
 
 ProgressbarContainer.prototype.getProgressbarHeight = function() {
@@ -123,56 +86,101 @@ ProgressbarContainer.prototype.getProgressbarYOffset = function() {
 	return this.progressbarYOffset;
 }
 
-ProgressbarContainer.prototype.getMarginForError = function() {
-	return this.marginForError;
+ProgressbarContainer.prototype.getMarginBottomPercent = function() {
+	return this.bottomMarginPercent;
 }
 
-ProgressbarContainer.prototype.getAdjustedProgressbarWidthMin = function() {
-	return this.adjustedProgressbarWidthMin;
+ProgressbarContainer.prototype.getMarginLeftPercent = function() {
+	return this.leftMarginPercent;
 }
 
-ProgressbarContainer.prototype.getAdjustedProgressbarHeightMax = function() {
-	return this.adjustedProgressbarHeightMax;
+ProgressbarContainer.prototype.getMarginRightPercent = function() {
+	return this.rightMarginPercent;
 }
 
-ProgressbarContainer.prototype.getAdjustedProgressbarHeightMin = function() {
-	return this.adjustedProgressbarHeightMin;
-}
-
-ProgressbarContainer.prototype.getBeginningProgressbarHeight = function() {
-	return this.beginningProgressbarHeight;
+ProgressbarContainer.prototype.getMarginTopPercent = function() {
+	return this.topMarginPercent;
 }
 
 
-//-------------------------------------------------------------------
+
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// MODIFIER METHODS
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+//-----------------------------------------------------------------------------
+// ADD METHODS
+//-----------------------------------------------------------------------------
+
+ProgressbarContainer.prototype.addToProgressbarGroup = function(obj) {
+	this.progressbarGroup.add(obj);
+}
+
+ProgressbarContainer.prototype.addToShapesLayer = function(obj) {
+	this.progressbar.shapesLayer.add(obj);
+}
+
+
+//-----------------------------------------------------------------------------
+// CREATE METHODS //
+//-----------------------------------------------------------------------------
+
+
+//-----------------------------------------------------------------------------
+// REMOVE METHODS //
+//-----------------------------------------------------------------------------
+
+
+//-----------------------------------------------------------------------------
 // SET METHODS 
-//-------------------------------------------------------------------
-ProgressbarContainer.prototype.setTopMarginPercent = function(percent) {
-	this.topMarginPercent = percent;
+//-----------------------------------------------------------------------------
+
+ProgressbarContainer.prototype.clientSetFillHeight = function(clientNum) {
+	this.progressbarObject.clientSetFillHeight(clientNum);
 }
 
-ProgressbarContainer.prototype.setBottomMarginPercent = function(percent) {
-	this.bottomMarginPercent = percent;
+ProgressbarContainer.prototype.setAdjustedProgressbarHeightMax = function(heightMax) {
+	this.adjustedProgressbarHeightMax = heightMax;
 }
 
-ProgressbarContainer.prototype.setRightMarginPercent = function(percent) {
-	this.rightMarginPercent = percent;
+ProgressbarContainer.prototype.setAdjustedProgressbarHeightMin = function(heightMin) {
+	this.adjustedProgressbarHeightMin = heightMin;
 }
 
-ProgressbarContainer.prototype.setLeftMarginPercent = function(percent) {
-	this.leftMarginPercent = percent;
+ProgressbarContainer.prototype.setAdjustedProgressbarWidthMin = function(widthMin) {
+	this.adjustedProgressbarWidthMin = widthMin;
 }
 
-ProgressbarContainer.prototype.setProgressbarOutlineImgName = function(imgName) {
-	this.progressbarImgName = imgName;
-}
-
-ProgressbarContainer.prototype.setProgressbarImgName = function(imgName) {
-	this.setProgressbarOutlineImgName(imgName);
+ProgressbarContainer.prototype.setBeginningProgressbarHeight = function(height) {
+	this.beginningProgressbarHeight = height;
 }
 
 ProgressbarContainer.prototype.setContainerHeightPercent = function(percent) {
 	this.containerHeightPercent = percent;
+}
+
+ProgressbarContainer.prototype.setErrorMargin = function(marginForError) {
+	this.marginForError = marginForError;
+}
+
+ProgressbarContainer.prototype.setMarginBottomPercent = function(percent) {
+	this.bottomMarginPercent = percent;
+}
+
+ProgressbarContainer.prototype.setMarginLeftPercent = function(percent) {
+	this.leftMarginPercent = percent;
+}
+
+ProgressbarContainer.prototype.setMarginRightPercent = function(percent) {
+	this.rightMarginPercent = percent;
+}
+
+ProgressbarContainer.prototype.setMarginTopPercent = function(percent) {
+	this.topMarginPercent = percent;
 }
 
 ProgressbarContainer.prototype.setProgressbarHeight = function(height) {
@@ -187,22 +195,97 @@ ProgressbarContainer.prototype.setProgressbarYOffset = function(yOffset) {
 	this.progressbarYOffset = yOffset;
 }
 
-ProgressbarContainer.prototype.setMarginForError = function(marginForError) {
-	this.marginForError = marginForError;
+
+
+
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+///////////////////////////////////////////////////////////////////////////////
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+// PRIVATE METHODS //
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+///////////////////////////////////////////////////////////////////////////////
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// ACCESSOR METHODS
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+//-----------------------------------------------------------------------------
+// GET METHODS //
+//-----------------------------------------------------------------------------
+
+
+
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// MODIFIER METHODS
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+//-----------------------------------------------------------------------------
+// ADD METHODS //
+//-----------------------------------------------------------------------------
+
+
+//-----------------------------------------------------------------------------
+// CREATE METHODS
+//-----------------------------------------------------------------------------
+
+ProgressbarContainer.prototype._createDefaultAttributes = function() {
+  this.setMarginTopPercent(.10);
+  this.setMarginBottomPercent(.10);
 }
 
-ProgressbarContainer.prototype.setAdjustedProgressbarWidthMin = function(widthMin) {
-	this.adjustedProgressbarWidthMin = widthMin;
+ProgressbarContainer.prototype._createProgressbarGroup = function() {
+	this.progressbarGroup = new Kinetic.Group({
+	  x: this.getProgressbarWidth(),
+    y: this.getProgressbarHeight()/(1-this.getMarginTopPercent()),//getInverse
+    draggable: false
+  });
+
+  this.addToShapesLayer(this.progressbarGroup);
 }
 
-ProgressbarContainer.prototype.setAdjustedProgressbarHeightMax = function(heightMax) {
-	this.adjustedProgressbarHeightMax = heightMax;
+ProgressbarContainer.prototype._createSubObjects = function(clientProgressbarObj) {
+  this.progressbarObject = new ProgressbarObject(this, clientProgressbarObj);
+
+  this.progressbarOutline = this.progressbarObject.getProgressbarOutline();
+  this.progressbarFilling = this.progressbarObject.getProgressbarFilling();
+  this.progressbarTicksOrgainzer = this.progressbarObject.getTicksOrganizer();
 }
 
-ProgressbarContainer.prototype.setAdjustedProgressbarHeightMin = function(heightMin) {
-	this.adjustedProgressbarHeightMin = heightMin;
+
+//-----------------------------------------------------------------------------
+// REMOVE METHODS //
+//-----------------------------------------------------------------------------
+
+
+//-----------------------------------------------------------------------------
+// SET METHODS //
+//-----------------------------------------------------------------------------
+
+ProgressbarContainer.prototype._setProgressbar = function(progressbar) {
+	this.progressbar = progressbar;
 }
 
-ProgressbarContainer.prototype.setBeginningProgressbarHeight = function(height) {
-	this.beginningProgressbarHeight = height;
+ProgressbarContainer.prototype._setUserAttributes = function(clientProgressbarObj) {
+	
+}
+
+ProgressbarContainer.prototype._setVariableSpecificAttributes = function() {
+  this.setContainerHeightPercent(1 - this.getMarginTopPercent() - this.getMarginBottomPercent());
+  this.setProgressbarHeight(this.progressbar.getStageHeight()*this.getContainerHeightPercent());
+  this.setProgressbarWidth(this.progressbar.getStageWidth()*.5);
+  this.setProgressbarYOffset(this.getProgressbarHeight()*-1);
+  this.setErrorMargin(1);
+  /*-------------------------------*/
+  this.setAdjustedProgressbarWidthMin(0);//Possibly put these in initializeAdjusted...
+  this.setAdjustedProgressbarHeightMax(this.getProgressbarHeight()-this.getErrorMargin()*2);
+  this.setAdjustedProgressbarHeightMin(0-this.getErrorMargin());
+  /*-------------------------------*/
+  this.setBeginningProgressbarHeight(this.getAdjustedProgressbarHeightMax());
 }

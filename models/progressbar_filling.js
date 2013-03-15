@@ -1,66 +1,54 @@
-//function ProgressbarFilling(messagesContainer, groupContainer, x, y, width, initialHeight, fillMax, fillMin, clientMin, clientMax, fill, name) {
-function ProgressbarFilling(progressbarObject, clientProgressbarObj) {
-  this.progressbarObject = progressbarObject;
-  this.progressbarContainer = progressbarObject.progressbarContainer;
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+///////////////////////////////////////////////////////////////////////////////
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+// PUBLIC METHODS //
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+///////////////////////////////////////////////////////////////////////////////
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// CONSTRUCTOR METHODS
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+function ProgressbarFilling(progressbarObject, clientProgressbarFillDetails) {
+  this._setProgressbarObject(progressbarObject);
   
-  this.loadDefaultAttributes();
-  this.loadUserAttributes(clientProgressbarObj);
-  this.loadDynamicallyCreatedAttributes();
-
-  this.loadFill();
+  this._createDefaultObjectsAndAttributes();
+  this._setUserAttributes(clientProgressbarFillDetails);
+  this._setDynamicallyCreatedAttributes();
 }
 
-ProgressbarFilling.prototype.loadDefaultAttributes = function() {
-  this.setClientNumMin(0);
-  this.setClientNumMax(100);
-  this.setClientNumCurrent(50);
-  this.setXOffset(0);
-  this.setYOffset(0);
-  this.setFillColor('red');
-  this.setNameID('filling');
+
+
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// ACCESSOR METHODS
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+//-----------------------------------------------------------------------------
+// GET METHODS //
+//-----------------------------------------------------------------------------
+
+ProgressbarFilling.prototype.getClientNumCurrent = function() {
+  return this.clientNumCurrent;
 }
 
-ProgressbarFilling.prototype.loadUserAttributes = function(clientProgressbarObj) {
-  if(clientProgressbarObj.progressbarFillDetails['clientNumMin'])
-    this.setClientNumMin(clientProgressbarObj.progressbarFillDetails['clientNumMin']);
-  if(clientProgressbarObj.progressbarFillDetails['clientNumMax'])
-    this.setClientNumMax(clientProgressbarObj.progressbarFillDetails['clientNumMax']);
-  if(clientProgressbarObj.progressbarFillDetails['clientNumCurrent'])
-    this.setClientNumCurrent(clientProgressbarObj.progressbarFillDetails['clientNumCurrent']);
-
-  if(clientProgressbarObj.progressbarFillDetails['fillColor'])
-    this.setFillColor(clientProgressbarObj.progressbarFillDetails['fillColor']);
-  if(clientProgressbarObj.progressbarFillDetails['nameID'])
-    this.setNameID(clientProgressbarObj.progressbarFillDetails['nameID']);  
+ProgressbarFilling.prototype.getClientNumFromPercent = function(percent) {
+  percent = Math.abs(percent);
+  var clientNum = Math.round(this.getClientNumMax()*(percent/100));
+  return clientNum;
 }
 
-ProgressbarFilling.prototype.loadDynamicallyCreatedAttributes = function() {
-  var progressbarOutlineImgName = this.progressbarContainer.getProgressbarOutlineImgName();
-  var progressbarContainer = this.progressbarContainer;
-
-  this.setFillMinYOffset(progressbarOutlineImgName);
-  this.setFillMaxYOffset(progressbarOutlineImgName);
-  this.setInitialHeight(this.getClientNumCurrent());
-
-  this.setXOffset(0);//progressbar.progressbarContainer.adjustedProgressbarWidthMin;
-  this.setYOffset(progressbarContainer.adjustedProgressbarHeightMin);
-  this.setHeightMax(progressbarContainer.adjustedProgressbarHeightMax);
-  this.setHeightMin(progressbarContainer.adjustedProgressbarHeightMin);
+ProgressbarFilling.prototype.getClientNumMax = function() {
+  return this.clientNumMax;
 }
 
-ProgressbarFilling.prototype.loadFill = function() {
-  this.fillObj = new Kinetic.Rect({
-    x: this.getXOffset(),
-    y: this.getYOffset(),
-    width: this.getFillWidth(),
-    height: this.getInitialHeight(),
-    fill: this.getFillColor(),
-    name: this.getNameID(),
-    draggable: false
-  });
-
-  this.setFillHeight(this.getInitialHeight());
-  this.progressbarObject.addToProgressbarObjGroup(this.getFillObject());
+ProgressbarFilling.prototype.getClientNumMin = function() {
+  return this.clientNumMin;
 }
 
 ProgressbarFilling.prototype.getClientNumToFillHeight = function(clientHeight) {
@@ -71,158 +59,38 @@ ProgressbarFilling.prototype.getClientNumToFillHeight = function(clientHeight) {
   return clientAdjustedHeight;
 }
 
-//-------------------------------------------------------------------
-/* SET METHODS */
-//-------------------------------------------------------------------
-ProgressbarFilling.prototype.setFillColor = function(fillColor) {
-  this.fillColor = fillColor;
+ProgressbarFilling.prototype.getCurrentPercent = function() {
+  return this.getPercentFromClientNum(this.getClientNumCurrent());
 }
 
-ProgressbarFilling.prototype.setNameID = function(nameID) {
-  this.nameID = nameID;
-}
-
-ProgressbarFilling.prototype.setInitialHeight = function(clientHeight) {
-  this.initialHeight = this.getClientNumToFillHeight(clientHeight);
-}
-
-ProgressbarFilling.prototype.setXOffset = function(xOffset) {
-  this.xOffset = xOffset;
-}
-
-ProgressbarFilling.prototype.setYOffset = function(yOffset) {
-  this.yOffset = yOffset;
-}
-
-ProgressbarFilling.prototype.setHeightMax = function(heightMax) {
-  this.heightMax = heightMax;
-}
-
-ProgressbarFilling.prototype.setHeightMin = function(heightMin) {
-  this.heightMin = heightMin;
-}
-
-ProgressbarFilling.prototype.setFillObject = function(fillObj) {
-  this.fillObj = fillObj;
-}
-
-ProgressbarFilling.prototype.setClientNumCurrent = function(clientNumCurrent) {
-  this.clientNumCurrent = clientNumCurrent;
-}
-
-ProgressbarFilling.prototype.setClientNumMin = function(clientNumMin) {
-  this.clientNumMin = clientNumMin;
-}
-
-ProgressbarFilling.prototype.setClientNumMax = function(clientNumMax) {
-  this.clientNumMax = clientNumMax;
-}
-
-ProgressbarFilling.prototype.setFillSize = function(width, height) {
-  this.fillObj.setSize(width, height);
-}
-
-ProgressbarFilling.prototype.setFillHeight = function(height) {
-  if((height*-1) > this.getFillMaxYOffset()) {
-    height = this.getFillMaxYOffset()*-1;
-  } else if ((height*-1) < this.getFillMinYOffset()) {
-    height = this.getFillMinYOffset()*-1;
-  }
-  this.setFillSize(this.getFillWidth(), height);
-}
-
-
-ProgressbarFilling.prototype.setFillMinYOffset = function(progressbarImgName) {
-  if(progressbarImgName == 'images/thermometer.png') {
-    var maxHeight = this.progressbarContainer.progressbarHeight;
-    this.fillMinYOffset = 105*(maxHeight/400);
-    return;
-  }
-  if(progressbarImgName == 'images/thermometer3.png') {
-    var maxHeight = this.progressbarContainer.progressbarHeight;
-    this.fillMinYOffset = 105*(maxHeight/400);
-    return;
-  }
-  this.fillMinYOffset = 0;
-}
-
-ProgressbarFilling.prototype.setFillMaxYOffset = function(progressbarImgName) {
-  if(progressbarImgName == 'images/thermometer.png') {
-    var maxHeight = this.progressbarContainer.progressbarHeight;
-    this.fillMaxYOffset = 397*(maxHeight/400);//This should be determined by group height
-    return;
-  }
-  if(progressbarImgName == 'images/thermometer3.png') {
-    var maxHeight = this.progressbarContainer.progressbarHeight;
-    this.fillMaxYOffset = 397*(maxHeight/400);//This should be determined by group height
-    return;
-  }
-  this.fillMaxYOffset = 0;
-}
-
-//---------------------------------------------------------------------
-
-//---------------------------------------------------------------------
-/* GET METHODS */
-//---------------------------------------------------------------------
 ProgressbarFilling.prototype.getFillColor = function() {
-  return this.fillColor;
+  return this.fillObj.getFill();
 }
 
-ProgressbarFilling.prototype.getNameID = function() {
-  return this.nameID;
+ProgressbarFilling.prototype.getFillHeight = function() {
+  return this.fillObj.getHeight();
 }
 
-ProgressbarFilling.prototype.getFillMinYOffset = function() {
-  return this.fillMinYOffset;
-}
-
-ProgressbarFilling.prototype.getFillMaxYOffset = function() {
+ProgressbarFilling.prototype.getFillMaxYOffset = function(progressbarImgName) {
+  if(progressbarImgName) {
+    return this._getFillMaxYOffsetFromImage(progressbarImgName);
+  }
   return this.fillMaxYOffset;
 }
 
-ProgressbarFilling.prototype.getFillWidth = function() {
-  return this.progressbarContainer.progressbarWidth;
-}
-
-ProgressbarFilling.prototype.getInitialHeight = function() {
-  return this.initialHeight;
-}
-
-ProgressbarFilling.prototype.getXOffset = function() {
-  return this.xOffset;
-}
-
-ProgressbarFilling.prototype.getYOffset = function() {
-  return this.yOffset;
-}
-
-ProgressbarFilling.prototype.getHeightMax = function() {
-  return this.heightMax;
-}
-
-ProgressbarFilling.prototype.getHeightMin = function() {
-  return this.heightMin;
+ProgressbarFilling.prototype.getFillMinYOffset = function(progressbarImgName) {
+  if(progressbarImgName) {
+    return this._getFillMinYOffsetFromImage(progressbarImgName);
+  }
+  return this.fillMinYOffset;
 }
 
 ProgressbarFilling.prototype.getFillObject = function() {
   return this.fillObj;
 }
 
-ProgressbarFilling.prototype.getClientNumCurrent = function() {
-  return this.clientNumCurrent;
-}
-
-ProgressbarFilling.prototype.getClientNumMin = function() {
-  return this.clientNumMin;
-}
-
-ProgressbarFilling.prototype.getClientNumMax = function() {
-  return this.clientNumMax;
-}
-
-ProgressbarFilling.prototype.getPercent = function(height) {
-  return this.getHeightToPercent(height);
+ProgressbarFilling.prototype.getFillWidth = function() {
+  return this.fillObj.getWidth();
 }
 
 ProgressbarFilling.prototype.getHeightToPercent = function(height) {
@@ -231,14 +99,289 @@ ProgressbarFilling.prototype.getHeightToPercent = function(height) {
   return percent;
 }
 
-ProgressbarFilling.prototype.getPercentToClientNum = function(percent) {
-  percent = Math.abs(percent);
-  var clientNum = Math.round(this.getClientNumMax()*(percent/100));
-  return clientNum;
+ProgressbarFilling.prototype.getInitialHeight = function() {
+  return this.initialHeight;
 }
 
-ProgressbarFilling.prototype.getInversePercentToClientNum = function(percent) {
+ProgressbarFilling.prototype.getInverseClientNumFromPercent = function(percent) {
   percent = Math.abs(percent);
   var clientNum = this.getClientNumMax() - Math.round(this.getClientNumMax()*(percent/100));
   return clientNum;
+}
+
+ProgressbarFilling.prototype.getNameID = function() {
+  return this.fillObj.getName();
+}
+
+//THINK ABOUT GETTING THE PERCENT FROM THE CLIENT NUMBERS INSTEAD
+//CAN WRITE TWO METHODS, GETTING PERCENT FROM HEIGHT AND CLIENT NUMS
+//AND CAN COMPARE THOSE NUMBERS TO ONE ANOTHER
+ProgressbarFilling.prototype.getPercent = function(height) {
+  return this.getHeightToPercent(height);
+}
+
+ProgressbarFilling.prototype.getPercentFromClientNum = function(clientNum) {
+  clientNum = Math.abs(clientNum);
+  var percent = clientNum/this.getClientNumMax()*100;
+  return percent;
+}
+
+ProgressbarFilling.prototype.getXOffset = function() {
+  return this.fillObj.getX();
+}
+
+ProgressbarFilling.prototype.getYOffset = function() {
+  return this.fillObj.getY();
+}
+
+
+
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// MODIFIER METHODS
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+//-----------------------------------------------------------------------------
+// ADD METHODS //
+//-----------------------------------------------------------------------------
+
+ProgressbarFilling.prototype.addToClientNumCurrent = function(addNum) {
+  var currentClientNum = this.getClientNumCurrent();
+  var newCurrentClientNum = currentClientNum + addNum;
+  this._setClientNumCurrent(newCurrentClientNum);
+  this._clientSetFillHeight(this.getClientNumCurrent());
+}
+
+
+//-----------------------------------------------------------------------------
+// CREATE METHODS //
+//-----------------------------------------------------------------------------
+
+
+//-----------------------------------------------------------------------------
+// REMOVE METHODS //
+//-----------------------------------------------------------------------------
+
+
+//-----------------------------------------------------------------------------
+// SET METHODS //
+//-----------------------------------------------------------------------------
+
+ProgressbarFilling.prototype.setClientNumCurrent = function(clientNum) {
+  this._setClientNumCurrent(clientNum);
+  this._clientSetFillHeight(this.getClientNumCurrent())
+}
+
+
+
+
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+///////////////////////////////////////////////////////////////////////////////
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+// PRIVATE METHODS //
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+///////////////////////////////////////////////////////////////////////////////
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// ACCESSOR METHODS
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+//-----------------------------------------------------------------------------
+// GET METHODS //
+//-----------------------------------------------------------------------------
+
+ProgressbarFilling.prototype._getFillMaxYOffsetFromImage = function(progressbarImgName) {
+  var offset = 0;
+
+  if(progressbarImgName == 'images/thermometer.png') {
+    var maxHeight = this.progressbarObject.getProgressbarHeight();
+    offset = 397*(maxHeight/400);//This should be determined by group height
+  }
+  if(progressbarImgName == 'images/thermometer3.png') {
+    var maxHeight = this.progressbarObject.getProgressbarHeight();
+    offset = 397*(maxHeight/400);//This should be determined by group height
+  }
+
+  return offset;
+}
+
+ProgressbarFilling.prototype._getFillMinYOffsetFromImage = function(progressbarImgName) {
+  var offset = 0;
+
+  if(progressbarImgName == 'images/thermometer.png') {
+    var height = this.progressbarObject.getProgressbarHeight();
+    offset = 105*(height/400);
+  }
+  else if(progressbarImgName == 'images/thermometer3.png') {
+    var height = this.progressbarObject.getProgressbarHeight();
+    offset = 105*(height/400);
+  }
+
+  return offset;
+}
+
+
+
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// MODIFIER METHODS
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+//-----------------------------------------------------------------------------
+// ADD METHODS //
+//-----------------------------------------------------------------------------
+
+
+//-----------------------------------------------------------------------------
+// CREATE METHODS //
+//-----------------------------------------------------------------------------
+
+ProgressbarFilling.prototype._createDefaultObjectsAndAttributes = function() {
+  this._createFill();
+
+  this._setClientNumMin(0);
+  this._setClientNumMax(100);
+  this._setClientNumCurrent(50);
+  this._setInitialHeight(0);
+}
+
+ProgressbarFilling.prototype._createFill = function() {
+  var progressbarOutlineImgName = this.progressbarObject.getProgressbarOutlineImgName();
+
+  this._setFillMinYOffset(progressbarOutlineImgName);
+  this._setFillMaxYOffset(progressbarOutlineImgName);
+
+  this.fillObj = new Kinetic.Rect({
+    x: 0,
+    y: this.progressbarObject.getAdjustedProgressbarHeightMin(),
+    width: this.progressbarObject.getProgressbarWidth(),
+    height: 100,
+    fill: 'red',
+    name: 'filling',
+    draggable: false
+  });
+
+  this.progressbarObject.addToProgressbarObjGroup(this.getFillObject());
+}
+
+
+//-----------------------------------------------------------------------------
+// REMOVE METHODS //
+//-----------------------------------------------------------------------------
+
+
+//-----------------------------------------------------------------------------
+// SET METHODS //
+//-----------------------------------------------------------------------------
+ProgressbarFilling.prototype._clientSetFillHeight = function(clientHeight) {
+  this._setFillHeight(this.getClientNumToFillHeight(clientHeight));
+}
+
+ProgressbarFilling.prototype._setClientNumCurrent = function(clientNumCurrent) {
+  this.clientNumCurrent = clientNumCurrent;
+}
+
+ProgressbarFilling.prototype._setClientNumMax = function(clientNumMax) {
+  this.clientNumMax = clientNumMax;
+}
+
+ProgressbarFilling.prototype._setClientNumMin = function(clientNumMin) {
+  this.clientNumMin = clientNumMin;
+}
+
+ProgressbarFilling.prototype._setDynamicallyCreatedAttributes = function() {
+  this._setInitialHeight(this.getClientNumCurrent());
+
+  this._clientSetFillHeight(this.getClientNumCurrent());
+}
+
+ProgressbarFilling.prototype._setFillColor = function(color) {
+  this.fillObj.setFill(color);
+}
+
+ProgressbarFilling.prototype._setFillHeight = function(height) {
+  height = Math.abs(height);
+  var newHeight = height*-1;
+
+  if(height > this.getFillMaxYOffset()) {
+    newHeight = this.getFillMaxYOffset()*-1;
+  } else if (height < this.getFillMinYOffset()) {
+    newHeight = this.getFillMinYOffset()*-1;
+  }
+  this.fillObj.setHeight(newHeight);
+  var a = 0;
+}
+
+ProgressbarFilling.prototype._setFillMinYOffset = function(progressbarImgName) {
+  this.fillMinYOffset = this.getFillMinYOffset(progressbarImgName);
+}
+
+ProgressbarFilling.prototype._setFillMaxYOffset = function(progressbarImgName) {
+  var offset = this.getFillMaxYOffset(progressbarImgName);
+  this.fillMaxYOffset = this.getFillMaxYOffset(progressbarImgName);
+}
+
+ProgressbarFilling.prototype._setFillObject = function(fillObj) {
+  this.fillObj = fillObj;
+}
+
+ProgressbarFilling.prototype._setFillSize = function(width, height) {
+  this.fillObj.setSize(width, height);
+}
+
+ProgressbarFilling.prototype._setFillWidth = function(width) {
+  this.fillObj.setWidth(width);
+}
+
+ProgressbarFilling.prototype._setInitialHeight = function(clientHeight) {
+  this.initialHeight = this.getClientNumToFillHeight(clientHeight);
+}
+
+ProgressbarFilling.prototype._setName = function(name) {
+  this.fillObj.setName(name);
+}
+
+ProgressbarFilling.prototype._setProgressbarObject = function(progressbarObject) {
+  this.progressbarObject = progressbarObject;
+}
+
+ProgressbarFilling.prototype._setUserAttributes = function(clientProgressbarFillDetails) {
+  if(clientProgressbarFillDetails == undefined)
+    return;
+  
+  if(clientProgressbarFillDetails['clientNumMin'] >= 0)
+    this._setClientNumMin(clientProgressbarFillDetails['clientNumMin']);
+  if(clientProgressbarFillDetails['clientNumMax'] >= 0)
+    this._setClientNumMax(clientProgressbarFillDetails['clientNumMax']);
+  if(clientProgressbarFillDetails['clientNumCurrent'] >= 0)
+    this._setClientNumCurrent(clientProgressbarFillDetails['clientNumCurrent']);
+
+  if(clientProgressbarFillDetails['fillColor'])
+    this._setFillColor(clientProgressbarFillDetails['fillColor']);
+  if(clientProgressbarFillDetails['nameID'])
+    this._setName(clientProgressbarFillDetails['nameID']);
+  if(clientProgressbarFillDetails['xOffset'])
+    this._setXOffset(clientProgressbarFillDetails['xOffset']);
+  if(clientProgressbarFillDetails['fillWidth'])
+    this._setFillWidth(clientProgressbarFillDetails['fillWidth']);
+  if(clientProgressbarFillDetails['yOffset'])
+    this._setYOffset(clientProgressbarFillDetails['yOffset']);
+  if(clientProgressbarFillDetails['initialHeight'])
+    this._setInitialHeight(clientProgressbarFillDetails['initialHeight']);
+}
+
+ProgressbarFilling.prototype._setYOffset = function(offset) {
+  this._setFillMinYOffset(offset);
+}
+
+ProgressbarFilling.prototype._setXOffset = function(offset) {
+  this.fillObj.setX(offset);
 }

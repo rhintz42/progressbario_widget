@@ -8,34 +8,92 @@ padding: 0px;
 </style>
 </head>
 <body>
-<div id="container" style="float: left"></div>
-<div id="container2" style="float: left"></div>
-<div id="container3" style="float: left"></div>
-<div id="container4" style="float: left"></div>
-<div id="container5" style="float: left"></div>
+<div id="container" style="float: left; border-style: solid; border-width:medium"></div>
+<div id="container1" style="float: left; border-style: solid; border-width:medium"></div>
+<div id="container2" style="float: left; border-style: solid; border-width:medium"></div>
+<div id="container3" style="float: left; border-style: solid; border-width:medium"></div>
+<div id="container4" style="float: left; border-style: solid; border-width:medium"></div>
+<div id="container5" style="float: left; border-style: solid; border-width:medium"></div>
+<div id="container6" style="float: left; border-style: solid; border-width:medium"></div>
+<div id="container7" style="float: left; border-style: solid; border-width:medium"></div>
+<div id="container8" style="float: left; border-style: solid; border-width:medium"></div>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js">
 </script>
 <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.3.1.min.js"></script>
-
-<script src="models/messages.js"></script>
+<!--
+<script src="models/message.js"></script>
+<script src="models/messages_container.js"></script>
 <script src="models/anchor.js"></script>
 <script src="models/progressbar_filling.js"></script>
-<script src="models/ticks.js"></script>
+<script src="models/ticks_organizer.js"></script>
+<script src="models/tick.js"></script>
 <script src="models/progressbar_object.js"></script>
-<!--
-<script src="models/progressbar_models.js"></script>
 -->
+<script src="models/progressbar_models.js"></script>
+<!--
 <script src="models/progressbar_container.js"></script>
 <script src="models/progressbar.js"></script>
+-->
 <script>
 	
+	var progressbarObj0 = new Object;
+	var progressbar0 = new Progressbar(progressbarObj0);
+	
+
+
 	var progressbarObj = new Object;
 	progressbarObj['stageWidth'] = 500;
 	progressbarObj['stageHeight'] = 500;
-	progressbarObj['stageContainerID'] = 'container';
-	progressbarObj.tickDetails = new Object;
-	progressbarObj.tickDetails['numTicks'] = 10;
+	progressbarObj['stageContainerID'] = 'container1';
+	//progressbarObj.tickDetails = new Object;
+	//progressbarObj.tickDetails['numTicks'] = 10;
+	progressbarObj.messages = new Array;
+	progressbarObj.messages[0] = new Object;
+	progressbarObj.messages[0]['name'] = 'percentComplete';
+  progressbarObj.messages[0]['x'] = 10;
+  progressbarObj.messages[0]['y'] = 10;
+  progressbarObj.messages[0]['title'] = 'Percent Complete';
+  progressbarObj.messages[0]['initialText'] = 'percentComplete';
+  progressbarObj.messages[0]['fontSize'] = 30;
+  progressbarObj.messages[0]['fontFamily'] = 'Calibri';
+  progressbarObj.messages[0]['fontColor'] = 'green';
+	progressbarObj.messages[1] = new Object;
+	progressbarObj.messages[1]['name'] = 'inversePercentComplete';
+  progressbarObj.messages[1]['x'] = 10;
+  progressbarObj.messages[1]['y'] = 10;
+  progressbarObj.messages[1]['title'] = 'Inverse Percent Complete';
+  progressbarObj.messages[1]['initialText'] = 'percentComplete';
+  progressbarObj.messages[1]['fontSize'] = 20;
+  progressbarObj.messages[1]['fontFamily'] = 'Calibri';
+  progressbarObj.messages[1]['fontColor'] = 'green';
+	progressbarObj.messages[2] = new Object;
+	progressbarObj.messages[2]['name'] = 'clientNumMax';
+  progressbarObj.messages[2]['x'] = 10;
+  progressbarObj.messages[2]['y'] = 10;
+  progressbarObj.messages[2]['title'] = 'Max';
+  progressbarObj.messages[2]['initialText'] = 'max';
+  progressbarObj.messages[2]['fontSize'] = 40;
+  progressbarObj.messages[2]['fontFamily'] = 'Calibri';
+  progressbarObj.messages[2]['fontColor'] = 'green';
+	progressbarObj.messages[3] = new Object;
+	progressbarObj.messages[3]['name'] = 'clientNumMin';
+  progressbarObj.messages[3]['x'] = 10;
+  progressbarObj.messages[3]['y'] = 10;
+  progressbarObj.messages[3]['title'] = 'Min';
+  progressbarObj.messages[3]['initialText'] = 'min';
+  progressbarObj.messages[3]['fontSize'] = 10;
+  progressbarObj.messages[3]['fontFamily'] = 'Calibri';
+  progressbarObj.messages[3]['fontColor'] = 'green';
+	progressbarObj.messages[4] = new Object;
+	progressbarObj.messages[4]['name'] = 'clientNumCurrent';
+  progressbarObj.messages[4]['x'] = 10;
+  progressbarObj.messages[4]['y'] = 10;
+  progressbarObj.messages[4]['title'] = 'Current';
+  progressbarObj.messages[4]['initialText'] = 'current';
+  progressbarObj.messages[4]['fontSize'] = 25;
+  progressbarObj.messages[4]['fontFamily'] = 'Calibri';
+  progressbarObj.messages[4]['fontColor'] = 'green';
 	progressbarObj.progressbarFillDetails = new Object;
 	progressbarObj.progressbarFillDetails['clientNumMin'] = 0;
 	progressbarObj.progressbarFillDetails['clientNumMax'] = 387;
@@ -43,7 +101,11 @@ padding: 0px;
 	progressbarObj.progressbarFillDetails['fillColor'] = 'red';
 	progressbarObj.progressbarFillDetails['nameID'] = 'filling';
 	progressbarObj.progressbarOutlineDetails = new Object;
+	
   var progressbar = new Progressbar(progressbarObj);
+  progressbar.setClientNumCurrent(220);
+  progressbar.addToClientNumCurrent(2);
+	
 	
 	//This is an example of setting a new height, but
 	//	Need to make functions in Progressbar.js to make
@@ -56,12 +118,12 @@ padding: 0px;
 	progressbarObj2['stageHeight'] = 200;
   progressbarObj2['stageContainerID'] = 'container2';
   progressbarObj2.tickDetails = new Object;
-	progressbarObj2.tickDetails['numTicks'] = 10;
+	progressbarObj2.tickDetails['numTicks'] = 3;
 	progressbarObj2.progressbarFillDetails = new Object;
 	progressbarObj2.progressbarFillDetails['clientNumMin'] = 0;
 	progressbarObj2.progressbarFillDetails['clientNumMax'] = 124;
 	progressbarObj2.progressbarFillDetails['clientNumCurrent'] = 58;
-	progressbarObj2.progressbarFillDetails['fillColor'] = 'red';
+	progressbarObj2.progressbarFillDetails['fillColor'] = 'green';
 	progressbarObj2.progressbarFillDetails['nameID'] = 'filling2';
 	progressbarObj2.progressbarOutlineDetails = new Object;
   var progressbar2 = new Progressbar(progressbarObj2);
@@ -71,27 +133,30 @@ padding: 0px;
   progressbarObj3['stageWidth'] = 300;
 	progressbarObj3['stageHeight'] = 300;
   progressbarObj3['stageContainerID'] = 'container3';
-  progressbarObj3.progressbarFillDetails = new Object;
 	progressbarObj3.progressbarFillDetails['clientNumCurrent'] = 88;
 	progressbarObj3.progressbarFillDetails['nameID'] = 'filling3';
 	progressbarObj3.progressbarOutlineDetails = new Object;
   var progressbar3 = new Progressbar(progressbarObj3);
+
+  progressbar3.addToClientNumCurrent(20);
+
+
+
+
 
   //var progressbarObj3 = new Object;
   progressbarObj4 = progressbarObj3;
   progressbarObj4['stageWidth'] = 300;
 	progressbarObj4['stageHeight'] = 600;
   progressbarObj4['stageContainerID'] = 'container4';
-  progressbarObj4.progressbarFillDetails = new Object;
 	progressbarObj2.progressbarFillDetails['clientNumMin'] = 0;
 	progressbarObj2.progressbarFillDetails['clientNumMax'] = 10034
 	progressbarObj4.progressbarFillDetails['clientNumCurrent'] = 10034;
 	progressbarObj4.progressbarFillDetails['nameID'] = 'filling3';
 	progressbarObj4.progressbarOutlineDetails = new Object;
   var progressbar4 = new Progressbar(progressbarObj4);
-
-  //var progressbarObj3 = new Object;
-  progressbarObj5 = progressbarObj3;
+	
+  progressbarObj5 = progressbarObj;
   progressbarObj5['stageWidth'] = 600;
 	progressbarObj5['stageHeight'] = 300;
   progressbarObj5['stageContainerID'] = 'container5';
@@ -103,6 +168,46 @@ padding: 0px;
 	progressbarObj5.progressbarFillDetails['nameID'] = 'filling3';
 	progressbarObj5.progressbarOutlineDetails = new Object;
   var progressbar5 = new Progressbar(progressbarObj5);
+
+
+  progressbarObj6 = progressbarObj;
+  progressbarObj6['stageWidth'] = 600;
+	progressbarObj6['stageHeight'] = 300;
+  progressbarObj6['stageContainerID'] = 'container6';
+  progressbarObj6['progressbarImgName'] = 'images/thermometer.png';
+	progressbarObj6.progressbarFillDetails['clientNumMin'] = 0;
+	progressbarObj6.progressbarFillDetails['clientNumMax'] = 10034
+	progressbarObj6.progressbarFillDetails['clientNumCurrent'] = 0;
+	progressbarObj6.progressbarFillDetails['nameID'] = 'filling6';
+	progressbarObj6.progressbarOutlineDetails = new Object;
+  var progressbar6 = new Progressbar(progressbarObj6);
+
+  progressbarObj7 = progressbarObj;
+  progressbarObj7['stageWidth'] = 300;
+	progressbarObj7['stageHeight'] = 600;
+  progressbarObj7['stageContainerID'] = 'container7';
+  progressbarObj7['progressbarImgName'] = 'images/thermometer3.png';
+	progressbarObj7.progressbarFillDetails['clientNumMin'] = 0;
+	progressbarObj7.progressbarFillDetails['clientNumMax'] = 100
+	progressbarObj7.progressbarFillDetails['clientNumCurrent'] = 100;
+	progressbarObj7.progressbarFillDetails['nameID'] = 'filling6';
+	progressbarObj7.progressbarOutlineDetails = new Object;
+  var progressbar7 = new Progressbar(progressbarObj7);
+
+	
+  progressbarObj8 = progressbarObj;
+  progressbarObj8['stageWidth'] = 300;
+	progressbarObj8['stageHeight'] = 600;
+  progressbarObj8['stageContainerID'] = 'container8';
+  progressbarObj8['progressbarImgName'] = 'images/thermometer3.png';
+	progressbarObj8.progressbarFillDetails['clientNumMin'] = 0;
+	progressbarObj8.progressbarFillDetails['clientNumMax'] = 100
+	progressbarObj8.progressbarFillDetails['clientNumCurrent'] = 0;
+	progressbarObj8.progressbarFillDetails['nameID'] = 'filling6';
+	progressbarObj8.progressbarOutlineDetails = new Object;
+  var progressbar8 = new Progressbar(progressbarObj8);
+
+  progressbar8.addToClientNumCurrent(40);
   
 </script>
 </body>

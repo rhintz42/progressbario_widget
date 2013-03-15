@@ -1,130 +1,177 @@
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+///////////////////////////////////////////////////////////////////////////////
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+// PUBLIC METHODS //
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+///////////////////////////////////////////////////////////////////////////////
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// CONSTRUCTOR METHODS
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
 function Progressbar(clientProgressbarObj) {
-  this.loadDefaultAttributes();
-  this.loadUserAttributes(clientProgressbarObj);
-  this.loadStageAndLayer();
+  this._createDefaultAttributes();
+  this._setUserAttributes(clientProgressbarObj);
+  this._createStageAndLayer();
 
-  this.progressbarContainer = new ProgressbarContainer(this, clientProgressbarObj);
+  this._createSubObjects(clientProgressbarObj);
 }
 
-Progressbar.prototype.loadStageAndLayer = function() {
-  this.createStage();
-  this.createShapeLayer();
+
+
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// ACCESSOR METHODS
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+//-----------------------------------------------------------------------------
+// GET METHODS //
+//-----------------------------------------------------------------------------
+
+Progressbar.prototype.getClientNumCurrent = function() {
+  return this.progressbarContainer.progressbarFilling.getClientNumCurrent();
 }
 
-Progressbar.prototype.loadDefaultAttributes = function() {
-  this.setStageHeight(500);
-  this.setStageWidth(500);
-  this.setStageContainerID('container');
-
-  this.setTopMarginPercent(.10);
-  this.setBottomMarginPercent(.10);
-  this.setRightMarginPercent(0);
-  this.setLeftMarginPercent(0);
+Progressbar.prototype.getClientNumMax = function() {
+  return this.progressbarContainer.progressbarFilling.getClientNumMax();
 }
 
-Progressbar.prototype.loadUserAttributes = function(clientProgressbarObj) {
-  if(clientProgressbarObj['stageHeight'])
-    this.setStageHeight(clientProgressbarObj['stageHeight']);
-  if(clientProgressbarObj['stageWidth'])
-    this.setStageWidth(clientProgressbarObj['stageWidth']);
-  if(clientProgressbarObj['stageContainerID'])
-    this.setStageContainerID(clientProgressbarObj['stageContainerID']);
-
-  if(clientProgressbarObj['topMarginPercent'])
-    this.setTopMarginPercent(clientProgressbarObj['topMarginPercent']);
-  if(clientProgressbarObj['bottomMarginPercent'])
-    this.setBottomMarginPercent(clientProgressbarObj['bottomMarginPercent']);
-  if(clientProgressbarObj['rightMarginPercent'])
-    this.setRightMarginPercent(clientProgressbarObj['rightMarginPercent']);
-  if(clientProgressbarObj['leftMarginPercent'])
-    this.setLeftMarginPercent(clientProgressbarObj['leftMarginPercent']);
-}
-/*
-Progressbar.prototype.setUserAttributes = function(clientProgressbarObj) {
-  
-  if(clientProgressbarObj['stageHeight'])
-    this.setStageHeight(clientProgressbarObj['stageHeight']);
-  if(clientProgressbarObj['stageWidth'])
-    this.setStageWidth(clientProgressbarObj['stageWidth']);
-  if(clientProgressbarObj['stageContainerID'])
-    this.setStageContainerID(clientProgressbarObj['stageContainerID']);
-
-  if(clientProgressbarObj['topMarginPercent'])
-    this.setTopMarginPercent(clientProgressbarObj['topMarginPercent']);
-  if(clientProgressbarObj['bottomMarginPercent'])
-    this.setBottomMarginPercent(clientProgressbarObj['bottomMarginPercent']);
-  if(clientProgressbarObj['rightMarginPercent'])
-    this.setRightMarginPercent(clientProgressbarObj['rightMarginPercent']);
-  if(clientProgressbarObj['leftMarginPercent'])
-    this.setLeftMarginPercent(clientProgressbarObj['leftMarginPercent']);
-  
-  CALL OBJECT BELOW THIS (PROGRESSBAR_CONTAINER) SET METHOD WITH CLIENTPROGRESSBAROBJ
-  
-  TO ADD TO NUMS, CAN HAVE VARS LIKE clientProgressbarObj['addToStageHeight']
+Progressbar.prototype.getClientNumMin = function() {
+  return this.progressbarContainer.progressbarFilling.getClientNumMin();
 }
 
-NEED TO ALSO HAVE REGULAR SET METHODS, BECAUSE OTHERWISE IT'S HARD TO JUST CHANGE SIMPLE VALUES FOR THE USER
-*/
-
-//-------------------------------------------------------------------
-/* CREATE METHODS */
-//-------------------------------------------------------------------
-Progressbar.prototype.createStage = function() {
-  this.stage = new Kinetic.Stage({
-    container: this.getStageContainerID(),
-    width: this.getStageWidth(),
-    height: this.getStageHeight()
-  });
+Progressbar.prototype.getInversePercentComplete = function() {
+  return 100 - this.progressbarContainer.progressbarFilling.getCurrentPercent();
 }
 
-Progressbar.prototype.createShapeLayer = function() {
-  this.shapesLayer = new Kinetic.Layer();
-
-  this.addToStage(this.shapesLayer);
+Progressbar.prototype.getPercentComplete = function() {
+  return this.progressbarContainer.progressbarFilling.getCurrentPercent();
 }
-//-------------------------------------------------------------------
-/* ADD METHODS */
-//-------------------------------------------------------------------
+
+
+
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// MODIFIER METHODS
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+//-----------------------------------------------------------------------------
+// ADD METHODS
+//-----------------------------------------------------------------------------
+
+Progressbar.prototype.addToCurrent = function(clientNum) {
+  //ENTER IMPLEMENTATION
+}
+
+Progressbar.prototype.addToClientNumCurrent = function(addNum) {
+  this.progressbarContainer.progressbarFilling.addToClientNumCurrent(addNum);
+  this.messagesContainer.updateMessagesText();
+}
+
 Progressbar.prototype.addToStage = function(obj) {
   this.stage.add(obj);
 }
 
-//-----------------------------------------------------------------
-/* SET METHODS */
-//-----------------------------------------------------------------
-Progressbar.prototype.setStageWidth = function(width) {
-  this.stageWidth = width;
+
+//-----------------------------------------------------------------------------
+// CREATE METHODS //
+//-----------------------------------------------------------------------------
+
+
+//-----------------------------------------------------------------------------
+// REMOVE METHODS //
+//-----------------------------------------------------------------------------
+
+
+//-----------------------------------------------------------------------------
+// SET METHODS 
+//-----------------------------------------------------------------------------
+
+Progressbar.prototype.setClientNumCurrent = function(clientNum) {
+  this.progressbarContainer.progressbarFilling.setClientNumCurrent(clientNum);
+  this.messagesContainer.updateMessagesText();
 }
 
-Progressbar.prototype.setStageHeight = function(height) {
-  this.stageHeight = height;
+Progressbar.prototype.setMarginBottomPercent = function(percent) {
+  this.bottomMarginPercent = percent;
+}
+
+Progressbar.prototype.setMarginLeftPercent = function(percent) {
+  this.leftMarginPercent = percent;
+}
+
+Progressbar.prototype.setMarginRightPercent = function(percent) {
+  this.rightMarginPercent = percent;
+}
+
+Progressbar.prototype.setMarginTopPercent = function(percent) {
+  this.topMarginPercent = percent;
+}
+
+Progressbar.prototype.setNumTicks = function(numTicks) {
+  //this.
 }
 
 Progressbar.prototype.setStageContainerID = function(containerID) {
   this.stageContainerID = containerID;
 }
 
-Progressbar.prototype.setTopMarginPercent = function(percent) {
-  this.topMarginPercent = percent;
+Progressbar.prototype.setStageHeight = function(height) {
+  this.stageHeight = height;
 }
 
-Progressbar.prototype.setBottomMarginPercent = function(percent) {
-  this.bottomMarginPercent = percent;
+Progressbar.prototype.setStageWidth = function(width) {
+  this.stageWidth = width;
 }
 
-Progressbar.prototype.setRightMarginPercent = function(percent) {
-  this.rightMarginPercent = percent;
+
+
+
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+///////////////////////////////////////////////////////////////////////////////
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+// PRIVATE METHODS //
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+///////////////////////////////////////////////////////////////////////////////
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// ACCESSOR METHODS
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+//-----------------------------------------------------------------------------
+// GET METHODS //
+//-----------------------------------------------------------------------------
+
+Progressbar.prototype.getMarginBottomPercent = function() {
+  return this.bottomMarginPercent;
 }
 
-Progressbar.prototype.setLeftMarginPercent = function(percent) {
-  this.leftMarginPercent = percent;
+Progressbar.prototype.getMarginLeftPercent = function() {
+  return this.leftMarginPercent;
 }
-//-----------------------------------------------------------------
 
+Progressbar.prototype.getMarginRightPercent = function() {
+  return this.rightMarginPercent;
+}
 
-//-----------------------------------------------------------------
-/* GET METHODS */
-//-----------------------------------------------------------------
+Progressbar.prototype.getMarginTopPercent = function() {
+  return this.topMarginPercent;
+}
+
 Progressbar.prototype.getStageWidth = function() {
   return this.stageWidth;
 }
@@ -137,19 +184,85 @@ Progressbar.prototype.getStageContainerID = function() {
   return this.stageContainerID;
 }
 
-Progressbar.prototype.getTopMarginPercent = function() {
-  return this.topMarginPercent;
+
+
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// MODIFIER METHODS
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+//-----------------------------------------------------------------------------
+// ADD METHODS //
+//-----------------------------------------------------------------------------
+
+
+//-----------------------------------------------------------------------------
+// CREATE METHODS //
+//-----------------------------------------------------------------------------
+
+Progressbar.prototype._createDefaultAttributes = function() {
+  this.setStageHeight(500);
+  this.setStageWidth(500);
+  this.setStageContainerID('container');
+
+  this.setMarginTopPercent(.10);
+  this.setMarginBottomPercent(.10);
+  this.setMarginRightPercent(0);
+  this.setMarginLeftPercent(0);
 }
 
-Progressbar.prototype.getBottomMarginPercent = function() {
-  return this.bottomMarginPercent;
+Progressbar.prototype._createStage = function() {
+  this.stage = new Kinetic.Stage({
+    container: this.getStageContainerID(),
+    width: this.getStageWidth(),
+    height: this.getStageHeight()
+  });
 }
 
-Progressbar.prototype.getRightMarginPercent = function() {
-  return this.rightMarginPercent;
+Progressbar.prototype._createStageAndLayer = function() {
+  this._createStage();
+  this._createShapeLayer();
 }
 
-Progressbar.prototype.getLeftMarginPercent = function() {
-  return this.leftMarginPercent;
+Progressbar.prototype._createShapeLayer = function() {
+  this.shapesLayer = new Kinetic.Layer();
+
+  this.addToStage(this.shapesLayer);
 }
-//-----------------------------------------------------------------
+
+Progressbar.prototype._createSubObjects = function(clientProgressbarObj) {
+  this.progressbarContainer = new ProgressbarContainer(this, clientProgressbarObj);
+
+  this.messagesContainer = new MessagesContainer(this, clientProgressbarObj.messages, 0, 0);//0 and 0 are top/left margins
+}
+
+
+//-----------------------------------------------------------------------------
+// REMOVE METHODS //
+//-----------------------------------------------------------------------------
+
+
+//-----------------------------------------------------------------------------
+// SET METHODS 
+//-----------------------------------------------------------------------------
+
+Progressbar.prototype._setUserAttributes = function(clientProgressbarObj) {
+  if(clientProgressbarObj['stageHeight'])
+    this.setStageHeight(clientProgressbarObj['stageHeight']);
+  if(clientProgressbarObj['stageWidth'])
+    this.setStageWidth(clientProgressbarObj['stageWidth']);
+  if(clientProgressbarObj['stageContainerID'])
+    this.setStageContainerID(clientProgressbarObj['stageContainerID']);
+
+  if(clientProgressbarObj['topMarginPercent'])
+    this.setMarginTopPercent(clientProgressbarObj['topMarginPercent']);
+  if(clientProgressbarObj['bottomMarginPercent'])
+    this.setMarginBottomPercent(clientProgressbarObj['bottomMarginPercent']);
+  if(clientProgressbarObj['rightMarginPercent'])
+    this.setMarginRightPercent(clientProgressbarObj['rightMarginPercent']);
+  if(clientProgressbarObj['leftMarginPercent'])
+    this.setMarginLeftPercent(clientProgressbarObj['leftMarginPercent']);
+}
