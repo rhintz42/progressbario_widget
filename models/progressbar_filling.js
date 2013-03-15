@@ -175,6 +175,12 @@ ProgressbarFilling.prototype.setClientNumCurrent = function(clientNum) {
 }
 
 
+ProgressbarFilling.prototype.setClientNumMax = function(clientNumMax) {
+  this._setClientNumMax(clientNumMax);
+  this._clientSetFillHeight(this.getClientNumCurrent());
+}
+
+
 
 
 //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -291,6 +297,7 @@ ProgressbarFilling.prototype._setClientNumCurrent = function(clientNumCurrent) {
 
 ProgressbarFilling.prototype._setClientNumMax = function(clientNumMax) {
   this.clientNumMax = clientNumMax;
+  //var a = 10;
 }
 
 ProgressbarFilling.prototype._setClientNumMin = function(clientNumMin) {

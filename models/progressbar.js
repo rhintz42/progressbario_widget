@@ -99,6 +99,7 @@ Progressbar.prototype.addToStage = function(obj) {
 Progressbar.prototype.setClientNumCurrent = function(clientNum) {
   this.progressbarContainer.progressbarFilling.setClientNumCurrent(clientNum);
   this.messagesContainer.updateMessagesText();
+  this.progressbarContainer.drawStage();
 }
 
 Progressbar.prototype.setMarginBottomPercent = function(percent) {
@@ -115,6 +116,12 @@ Progressbar.prototype.setMarginRightPercent = function(percent) {
 
 Progressbar.prototype.setMarginTopPercent = function(percent) {
   this.topMarginPercent = percent;
+}
+
+Progressbar.prototype.setMaximumValue = function(clientNum) {
+  this.progressbarContainer.progressbarFilling.setClientNumMax(clientNum);
+  this.messagesContainer.updateMessagesText();
+  this.progressbarContainer.drawStage();
 }
 
 Progressbar.prototype.setNumTicks = function(numTicks) {
