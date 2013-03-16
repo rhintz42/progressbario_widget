@@ -169,7 +169,7 @@ ProgressbarObject.prototype.setProgressbarOutlineImgName = function(imgName) {
 //-----------------------------------------------------------------------------
 
 ProgressbarObject.prototype._createDefaultAttributes = function() {
-  this._createImgObj('images/thermometer3.png');
+  this._createImgObj('http://progressbar-io.googlecode.com/files/thermometer3.png');
 }
 
 ProgressbarObject.prototype._createImgObj = function(imgName) {

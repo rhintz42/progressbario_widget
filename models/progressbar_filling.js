@@ -209,10 +209,15 @@ ProgressbarFilling.prototype._getFillMaxYOffsetFromImage = function(progressbarI
     var maxHeight = this.progressbarObject.getProgressbarHeight();
     offset = 397*(maxHeight/400);//This should be determined by group height
   }
-  if(progressbarImgName == 'images/thermometer3.png') {
+  else if(progressbarImgName == 'images/thermometer3.png') {
     var maxHeight = this.progressbarObject.getProgressbarHeight();
     offset = 397*(maxHeight/400);//This should be determined by group height
   }
+  else if(progressbarImgName == 'http://progressbar-io.googlecode.com/files/thermometer3.png') {
+    var maxHeight = this.progressbarObject.getProgressbarHeight();
+    offset = 397*(maxHeight/400);//This should be determined by group height
+  }
+
 
   return offset;
 }
@@ -225,6 +230,10 @@ ProgressbarFilling.prototype._getFillMinYOffsetFromImage = function(progressbarI
     offset = 105*(height/400);
   }
   else if(progressbarImgName == 'images/thermometer3.png') {
+    var height = this.progressbarObject.getProgressbarHeight();
+    offset = 105*(height/400);
+  }
+  else if(progressbarImgName == 'http://progressbar-io.googlecode.com/files/thermometer3.png') {
     var height = this.progressbarObject.getProgressbarHeight();
     offset = 105*(height/400);
   }

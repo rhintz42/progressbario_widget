@@ -65,7 +65,10 @@ TicksOrganizer.prototype.getTickMaxY = function(progressbarImgName) {
   if(progressbarImgName == 'images/thermometer.png') {
     return 370*(this.progressbarObject.getProgressbarHeight()/400);
   }
-  if(progressbarImgName == 'images/thermometer3.png') {
+  else if(progressbarImgName == 'images/thermometer3.png') {
+    return 370*(this.progressbarObject.getProgressbarHeight()/400);
+  }
+  else if(progressbarImgName == 'http://progressbar-io.googlecode.com/files/thermometer3.png') {
     return 370*(this.progressbarObject.getProgressbarHeight()/400);
   }
   return 0;
@@ -98,6 +101,9 @@ TicksOrganizer.prototype.getTickYOffset = function(progressbarImgName) {
   if(progressbarImgName == 'images/thermometer3.png') {
     return 105*(this.progressbarObject.getProgressbarHeight()/400);
   }
+  if(progressbarImgName == 'http://progressbar-io.googlecode.com/files/thermometer3.png') {
+    return 105*(this.progressbarObject.getProgressbarHeight()/400);
+  }
   return 0;
 }
 
@@ -106,6 +112,9 @@ TicksOrganizer.prototype.getTickXOffset = function(progressbarImgName) {
     return 95*(this.progressbarObject.getProgressbarWidth()/250);
   }
   if(progressbarImgName == 'images/thermometer3.png') {
+    return 95*(this.progressbarObject.getProgressbarWidth()/250);
+  }
+  if(progressbarImgName == 'http://progressbar-io.googlecode.com/files/thermometer3.png') {
     return 95*(this.progressbarObject.getProgressbarWidth()/250);
   }
   return 0;
