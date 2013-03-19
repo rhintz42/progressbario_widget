@@ -36,31 +36,71 @@ function MessagesContainer(progressbar, clientMessages) {
 //-----------------------------------------------------------------------------
 
 MessagesContainer.prototype.getDefaultFontColor = function() {
-	return this.defaultFontColor;
+	return 'black';
 }
 
 MessagesContainer.prototype.getDefaultFontFamily = function() {
-	return this.defaultFontFamily;
-}
-
-MessagesContainer.prototype.getDefaultFontSize = function() {
-	return this.defaultFontSize;
+	return 'Calibri';
 }
 
 MessagesContainer.prototype.getDefaultMarginBottom = function() {
-	return this.defaultMarginBottom;
+	return 10;
 }
 
 MessagesContainer.prototype.getDefaultMarginLeft = function() {
-	return this.defaultMarginLeft;
+	return 10;
 }
 
 MessagesContainer.prototype.getDefaultMarginRight = function() {
-	return this.defaultMarginRight;
+	return 10;
 }
 
 MessagesContainer.prototype.getDefaultMarginTop = function() {
+	return 10;
+}
+
+MessagesContainer.prototype.getDefaultRecommendedSizeConverter = function() {
+	return 16/500;
+}
+
+MessagesContainer.prototype.getMessageDefaultFontColor = function() {
+	return this.defaultFontColor;
+}
+
+MessagesContainer.prototype.getMessageDefaultFontFamily = function() {
+	return this.defaultFontFamily;
+}
+
+MessagesContainer.prototype.getMessageDefaultFontSize = function() {
+	return this.defaultFontSize;
+}
+
+MessagesContainer.prototype.getMessageDefaultLabelText = function() {
+	return this.getMessageDefaultTextLabel();
+}
+
+MessagesContainer.prototype.getMessageDefaultMarginBottom = function() {
+	return this.defaultMarginBottom;
+}
+
+MessagesContainer.prototype.getMessageDefaultMarginLeft = function() {
+	return this.defaultMarginLeft;
+}
+
+MessagesContainer.prototype.getMessageDefaultMarginRight = function() {
+	return this.defaultMarginRight;
+}
+
+MessagesContainer.prototype.getMessageDefaultMarginTop = function() {
 	return this.defaultMarginTop;
+}
+
+MessagesContainer.prototype.getMessageDefaultText = function() {
+	return 'Default Text';
+}
+
+MessagesContainer.prototype.getMessageDefaultTextLabel = function() {
+	return 'Default Label';
 }
 
 MessagesContainer.prototype.getMessagesMap = function() {
@@ -73,7 +113,7 @@ MessagesContainer.prototype.getMessageText = function(name) {
 
 MessagesContainer.prototype.getRecommendedFontSize = function() {
 	var size = Math.max(this.progressbar.getStageWidth(), this.progressbar.getStageHeight());
-	return size*(16/500);
+	return size*this.getDefaultRecommendedSizeConverter();
 }
 
 
@@ -114,31 +154,31 @@ MessagesContainer.prototype.addMessage = function(messageDetails, currentYOffset
 //-----------------------------------------------------------------------------
 
 
-MessagesContainer.prototype.setDefaultFontColor = function(color) {
+MessagesContainer.prototype.setMessageDefaultFontColor = function(color) {
 	this.defaultFontColor = color;
 }
 
-MessagesContainer.prototype.setDefaultFontFamily = function(fontFamily) {
+MessagesContainer.prototype.setMessageDefaultFontFamily = function(fontFamily) {
 	this.defaultFontFamily = fontFamily;
 }
 
-MessagesContainer.prototype.setDefaultFontSize = function(size) {
+MessagesContainer.prototype.setMessageDefaultFontSize = function(size) {
 	this.defaultFontSize = size;
 }
 
-MessagesContainer.prototype.setDefaultMarginBottom = function(margin) {
+MessagesContainer.prototype.setMessageDefaultMarginBottom = function(margin) {
 	this.defaultMarginBottom = margin;
 }
 
-MessagesContainer.prototype.setDefaultMarginLeft = function(margin) {
+MessagesContainer.prototype.setMessageDefaultMarginLeft = function(margin) {
 	this.defaultMarginLeft = margin;
 }
 
-MessagesContainer.prototype.setDefaultMarginRight = function(margin) {
+MessagesContainer.prototype.setMessageDefaultMarginRight = function(margin) {
 	this.defaultMarginRight = margin;
 }
 
-MessagesContainer.prototype.setDefaultMarginTop = function(margin) {
+MessagesContainer.prototype.setMessageDefaultMarginTop = function(margin) {
 	this.defaultMarginTop = margin;
 }
 
@@ -195,13 +235,13 @@ MessagesContainer.prototype.updateMessagesText = function() {
 //-----------------------------------------------------------------------------
 
 MessagesContainer.prototype._createDefaultAttributes = function() {
-	this.setDefaultMarginTop(10);
-	this.setDefaultMarginBottom(10);
-	this.setDefaultMarginLeft(10);
-	this.setDefaultMarginRight(10);
-	this.setDefaultFontSize(this.getRecommendedFontSize());
-	this.setDefaultFontFamily('Calibri');
-	this.setDefaultFontColor('black');
+	this.setMessageDefaultMarginTop(this.getDefaultMarginTop());
+	this.setMessageDefaultMarginBottom(this.getDefaultMarginBottom());
+	this.setMessageDefaultMarginLeft(this.getDefaultMarginLeft());
+	this.setMessageDefaultMarginRight(this.getDefaultMarginRight());
+	this.setMessageDefaultFontSize(this.getRecommendedFontSize());
+	this.setMessageDefaultFontFamily(this.getDefaultFontFamily());
+	this.setMessageDefaultFontColor(this.getDefaultFontColor());
 
 	this.nameToCallback = {};
 	this.nameToCallback['percentComplete'] = function(that) {
@@ -231,8 +271,10 @@ MessagesContainer.prototype._createInitialClientMessages = function(clientMessag
 		return;
 	var currentYOffset = 0;
 	for(var i = 0; i < clientMessages.length; i++) {
-		this.addMessage(clientMessages[i], currentYOffset);
-		currentYOffset += clientMessages[i]['fontSize']*2;
+		if(clientMessages[i] != undefined) {
+			this.addMessage(clientMessages[i], currentYOffset);
+			currentYOffset += clientMessages[i]['fontSize']*2;
+		}
 	}
 }
 

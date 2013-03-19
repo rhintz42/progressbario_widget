@@ -208,26 +208,27 @@ Message.prototype._createDefaultAttributes = function() {
 }
 
 Message.prototype._createDefaultMessage = function() {
-	var defaultFontSize = this.messagesContainer.getDefaultFontSize();
+	var defaultFontSize = this.messagesContainer.getMessageDefaultFontSize();
+	
 	this.message = new Kinetic.Text({
-		x: this.messagesContainer.getDefaultMarginTop(),
-		y: this.messagesContainer.getDefaultMarginLeft()+defaultFontSize,
-		text: 'Default Text',
+		x: this.messagesContainer.getMessageDefaultMarginTop(),
+		y: this.messagesContainer.getMessageDefaultMarginLeft()+defaultFontSize,
+		text: this.messagesContainer.getMessageDefaultText(),
 		fontSize: defaultFontSize,
-		fontFamily: this.messagesContainer.getDefaultFontFamily(),
-		fill: this.messagesContainer.getDefaultFontColor()
+		fontFamily: this.messagesContainer.getMessageDefaultFontFamily(),
+		fill: this.messagesContainer.getMessageDefaultFontColor()
 	});
 	this.messagesContainer.messageGroup.add(this.message);
 }
 
 Message.prototype._createDefaultMessageLabel = function() {
 	this.messageLabel = new Kinetic.Text({
-		x: this.messagesContainer.getDefaultMarginTop(),
-		y: this.messagesContainer.getDefaultMarginLeft(),
-		text: 'Default Text',
-		fontSize: this.messagesContainer.getDefaultFontSize(),
-		fontFamily: this.messagesContainer.getDefaultFontFamily(),
-		fill: this.messagesContainer.getDefaultFontColor()
+		x: this.messagesContainer.getMessageDefaultMarginTop(),
+		y: this.messagesContainer.getMessageDefaultMarginLeft(),
+		text: this.messagesContainer.getMessageDefaultLabelText(),
+		fontSize: this.messagesContainer.getMessageDefaultFontSize(),
+		fontFamily: this.messagesContainer.getMessageDefaultFontFamily(),
+		fill: this.messagesContainer.getMessageDefaultFontColor()
 	});
 
 	this.messagesContainer.messageGroup.add(this.messageLabel);

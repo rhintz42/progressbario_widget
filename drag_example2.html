@@ -21,7 +21,7 @@ padding: 0px;
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js">
 </script>
 <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.3.1.min.js"></script>
-<!--
+
 <script src="models/message.js"></script>
 <script src="models/messages_container.js"></script>
 <script src="models/anchor.js"></script>
@@ -29,12 +29,12 @@ padding: 0px;
 <script src="models/ticks_organizer.js"></script>
 <script src="models/tick.js"></script>
 <script src="models/progressbar_object.js"></script>
--->
-<script src="models/progressbar_models.js"></script>
 <!--
+<script src="models/progressbar_models.js"></script>
+-->
 <script src="models/progressbar_container.js"></script>
 <script src="models/progressbar.js"></script>
--->
+
 <script>
 	
 	var progressbarObj0 = new Object;
@@ -49,6 +49,7 @@ padding: 0px;
 	//progressbarObj.tickDetails = new Object;
 	//progressbarObj.tickDetails['numTicks'] = 10;
 	progressbarObj.messages = new Array;
+  /*
 	progressbarObj.messages[0] = new Object;
 	progressbarObj.messages[0]['name'] = 'percentComplete';
   progressbarObj.messages[0]['x'] = 10;
@@ -58,7 +59,8 @@ padding: 0px;
   progressbarObj.messages[0]['fontSize'] = 30;
   progressbarObj.messages[0]['fontFamily'] = 'Calibri';
   progressbarObj.messages[0]['fontColor'] = 'green';
-	progressbarObj.messages[1] = new Object;
+	*/
+  progressbarObj.messages[1] = new Object;
 	progressbarObj.messages[1]['name'] = 'inversePercentComplete';
   progressbarObj.messages[1]['x'] = 10;
   progressbarObj.messages[1]['y'] = 10;
@@ -95,16 +97,36 @@ padding: 0px;
   progressbarObj.messages[4]['fontFamily'] = 'Calibri';
   progressbarObj.messages[4]['fontColor'] = 'green';
 	progressbarObj.progressbarFillDetails = new Object;
-	progressbarObj.progressbarFillDetails['clientNumMin'] = 0;
+	progressbarObj.progressbarFillDetails['clientNumMin'] = 100;
 	progressbarObj.progressbarFillDetails['clientNumMax'] = 387;
-	progressbarObj.progressbarFillDetails['clientNumCurrent'] = 58;
+	progressbarObj.progressbarFillDetails['clientNumCurrent'] = 100;
 	progressbarObj.progressbarFillDetails['fillColor'] = 'red';
 	progressbarObj.progressbarFillDetails['nameID'] = 'filling';
 	progressbarObj.progressbarOutlineDetails = new Object;
-	
-  var progressbar = new Progressbar(progressbarObj);
-  progressbar.setClientNumCurrent(220);
-  progressbar.addToClientNumCurrent(2);
+  
+  var myJSONText = JSON.stringify(progressbarObj);
+
+  var myJSONObj = JSON.parse(myJSONText);
+  var progressbar = new Progressbar(myJSONObj);
+
+  //var progressbar = new Progressbar(progressbarObj);
+
+  //var pBarObj = new Object;
+
+  //THERES REALLY NO REASON FOR A SET METHOD BECAUSE OTHER CLIENTS
+  //	SHOULDN"T BE REALLY CHANGING THE PROGRESSBAR DYNAMICALLY
+  //	EXCEPT FOR A COUPLE THINGS LIKE MAYBE ADDING TO FILLING
+  /*
+  pBarObj['topMarginPercent'] = 100;
+  pBarObj['bottomMarginPercent'] = 100;
+  pBarObj['rightMarginPercent'] = 100;
+  pBarObj['leftMarginPercent'] = 100;
+  pBarObj.messages
+
+  progressbar.setUserAttributes(pBarObj);
+  */
+  //progressbar.setClientNumCurrent(220);
+  //progressbar.addToClientNumCurrent(2);
 	
 	
 	//This is an example of setting a new height, but

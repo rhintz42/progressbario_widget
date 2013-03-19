@@ -22,6 +22,7 @@ function Tick(tickOrganizer, clientTickObj) {
 
 
 
+
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 // ACCESSOR METHODS
@@ -34,6 +35,42 @@ function Tick(tickOrganizer, clientTickObj) {
 
 Tick.prototype.getColor = function() {
   return this.tick.getFill();
+}
+
+Tick.prototype.getDefaultFill = function() {
+  return this.tickOrganizer.getFillColor();
+}
+
+Tick.prototype.getDefaultFillColor = function() {
+  return this.getDefaultFill();
+}
+
+Tick.prototype.getDefaultHeight = function() {
+  return this.tickOrganizer.getMaxTickHeight();
+}
+
+Tick.prototype.getDefaultStrokeWidth = function() {
+  return this.tickOrganizer.getMaxStrokeWidth();
+}
+
+Tick.prototype.getDefaultWidth = function() {
+  return this.tickOrganizer.getMaxTickWidth();
+}
+
+Tick.prototype.getDefaultName = function() {
+  return this.tickOrganizer.getTickOrganizerName();
+}
+
+Tick.prototype.getDefaultStroke = function() {
+  return this.tickOrganizer.getTickStroke();
+}
+
+Tick.prototype.getDefaultXOffset = function() {
+  return this.tickOrganizer.getTickOrganizerXOffset();
+}
+
+Tick.prototype.getDefaultYOffset = function() {
+  return this.tickOrganizer.getTickOrganizerYOffset();
 }
 
 Tick.prototype.getHeight = function() {
@@ -178,16 +215,16 @@ Tick.prototype._addToTickOrganizerGroup = function(tickObj) {
 // CREATE METHODS //
 //-----------------------------------------------------------------------------
 
-Tick.prototype._createDefaultAttributes = function(tickOrganizer) {
+Tick.prototype._createDefaultAttributes = function() {
   this.tick = new Kinetic.Rect({
-    x: tickOrganizer.getTickOrganizerXOffset(),
-    y: tickOrganizer.getTickOrganizerYOffset(),
-    width: tickOrganizer.getMaxTickWidth(),
-    height: tickOrganizer.getMaxTickHeight(),
-    stroke: tickOrganizer.getTickStroke(),
-    fill: tickOrganizer.getFillColor(),
-    strokeWidth: tickOrganizer.getMaxStrokeWidth(),
-    name: tickOrganizer.getTickOrganizerName()
+    x: this.getDefaultXOffset(),
+    y: this.getDefaultYOffset(),
+    width: this.getDefaultWidth(),
+    height: this.getDefaultHeight(),
+    stroke: this.getDefaultStroke(),
+    fill: this.getDefaultFillColor(),
+    strokeWidth: this.getDefaultStrokeWidth(),
+    name: this.getDefaultName()
   });
 }
 

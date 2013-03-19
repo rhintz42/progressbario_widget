@@ -37,6 +37,38 @@ function TicksOrganizer(progressbarObject, clientTickDetails) {
 // GET METHODS
 //-----------------------------------------------------------------------------
 
+TicksOrganizer.prototype.getColor = function() {
+  return this.getFillColor();
+}
+
+TicksOrganizer.prototype.getDefaultFillColor = function() {
+  return 'black';
+}
+
+TicksOrganizer.prototype.getDefaultMaxStrokeWidth = function() {
+  return 2;
+}
+
+TicksOrganizer.prototype.getDefaultName = function() {
+  return 'tick';
+}
+
+TicksOrganizer.prototype.getDefaultNumTicks = function() {
+  return 10;
+}
+
+TicksOrganizer.prototype.getDefaultTickHeight = function() {
+  return 1;
+}
+
+TicksOrganizer.prototype.getDefaultTickStroke = function() {
+  return '#666';
+}
+
+TicksOrganizer.prototype.getDefaultTickWidth = function() {
+  return 10;
+}
+
 TicksOrganizer.prototype.getFillColor = function() {
   return this.fillColor;
 }
@@ -163,6 +195,15 @@ TicksOrganizer.prototype.appendToTickArray = function(obj) {
 // SET METHODS
 //-----------------------------------------------------------------------------
 
+TicksOrganizer.prototype.setUserAttributes = function(clientTickDetails) {
+  this._setUserAttributes(clientTickDetails);
+
+  //SHOULD ALSO HAVE A FUNCITON THAT GOES THROUGH EACH TICK AND
+  //  GOES THROUGH THEIR setUserAttributes method
+}
+
+
+
 
 //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 ///////////////////////////////////////////////////////////////////////////////
@@ -236,13 +277,13 @@ TicksOrganizer.prototype._createDefaultAttributes = function() {
   this._setTickOrganizerXOffset(this.getTickXOffset(progressbarOutlineImgName));
   this._setTickOrganizerYOffset(this.getTickYOffset(progressbarOutlineImgName));
   this._setTickOrganizerYMax(this.getTickMaxY(progressbarOutlineImgName));
-  this._setMaxTickWidth(10);
-  this._setMaxTickHeight(1);
-  this._setTickStroke('#666');
-  this._setFillColor('black');
-  this._setMaxStrokeWidth(2);
-  this._setTickOrganizerName('tick');
-  this._setNumTicks(10);
+  this._setMaxTickWidth(this.getDefaultTickWidth());
+  this._setMaxTickHeight(this.getDefaultTickHeight());
+  this._setTickStroke(this.getDefaultTickStroke());
+  this._setFillColor(this.getDefaultFillColor());
+  this._setMaxStrokeWidth(this.getDefaultMaxStrokeWidth());
+  this._setTickOrganizerName(this.getDefaultName());
+  this._setNumTicks(this.getDefaultNumTicks());
 }
 
 TicksOrganizer.prototype._createTickObjects = function() {

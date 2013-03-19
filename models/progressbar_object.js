@@ -44,6 +44,10 @@ ProgressbarObject.prototype.getAdjustedProgressbarHeightMin = function() {
   return this.progressbarContainer.getAdjustedProgressbarHeightMin();
 }
 
+ProgressbarObject.prototype.getDefaultImageSrc = function() {
+  return 'http://progressbar-io.googlecode.com/files/thermometer3.png';
+}
+
 ProgressbarObject.prototype.getImageObj = function() {
   return this.imageObj;
 }
@@ -96,7 +100,6 @@ ProgressbarObject.prototype.getTicksOrganizer = function() {
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-
 //-----------------------------------------------------------------------------
 // ADD METHODS //
 //-----------------------------------------------------------------------------
@@ -127,6 +130,13 @@ ProgressbarObject.prototype._setProgressbarOutline = function(progressbarOutline
 
 ProgressbarObject.prototype.setProgressbarOutlineImgName = function(imgName) {
   this.progressbarImgName = imgName;
+}
+
+ProgressbarObject.prototype.setUserAttributes = function(clientProgressbarObj) {
+  this._setUserAttributes(clientProgressbarObj);
+
+  this.progressbarFilling.setUserAttributes(clientProgressbarObj.progressbarFillDetails);
+  this.ticksOrganizer.setUserAttributes(clientProgressbarObj.tickDetails);
 }
 
 
@@ -169,7 +179,7 @@ ProgressbarObject.prototype.setProgressbarOutlineImgName = function(imgName) {
 //-----------------------------------------------------------------------------
 
 ProgressbarObject.prototype._createDefaultAttributes = function() {
-  this._createImgObj('http://progressbar-io.googlecode.com/files/thermometer3.png');
+  this._createImgObj(this.getDefaultImageSrc());
 }
 
 ProgressbarObject.prototype._createImgObj = function(imgName) {

@@ -52,7 +52,9 @@ ProgressbarFilling.prototype.getClientNumMin = function() {
 }
 
 ProgressbarFilling.prototype.getClientNumToFillHeight = function(clientHeight) {
-  clientHeight = Math.abs(clientHeight)*-1;
+  clientHeight = Math.abs(clientHeight)
+  clientHeight -= this.getClientNumMin();
+  clientHeight *= -1;
   var fillRange = this.getFillMaxYOffset()-this.getFillMinYOffset();
   var clientRange = this.getClientNumMax()-this.getClientNumMin();
   var clientAdjustedHeight = (clientHeight * (fillRange/clientRange)) - this.getFillMinYOffset();
@@ -61,6 +63,46 @@ ProgressbarFilling.prototype.getClientNumToFillHeight = function(clientHeight) {
 
 ProgressbarFilling.prototype.getCurrentPercent = function() {
   return this.getPercentFromClientNum(this.getClientNumCurrent());
+}
+
+ProgressbarFilling.prototype.getDefaultClientNumCurrent = function() {
+  return 50;
+}
+
+ProgressbarFilling.prototype.getDefaultClientNumMax = function() {
+  return 100;
+}
+
+ProgressbarFilling.prototype.getDefaultClientNumMin = function() {
+  return 0;
+}
+
+ProgressbarFilling.prototype.getDefaultFillColor = function() {
+  return 'red';
+}
+
+ProgressbarFilling.prototype.getDefaultFillHeight = function() {
+  return 100;
+}
+
+ProgressbarFilling.prototype.getDefaultFillName = function() {
+  return 'filling';
+}
+
+ProgressbarFilling.prototype.getDefaultFillWidth = function() {
+  return this.progressbarObject.getProgressbarWidth();
+}
+
+ProgressbarFilling.prototype.getDefaultFillXOffset = function() {
+  return 0;
+}
+
+ProgressbarFilling.prototype.getDefaultFillYOffset = function() {
+  return this.progressbarObject.getAdjustedProgressbarHeightMin();
+}
+
+ProgressbarFilling.prototype.getDefaultInitialHeight = function() {
+  return 0;
 }
 
 ProgressbarFilling.prototype.getFillColor = function() {
@@ -122,7 +164,7 @@ ProgressbarFilling.prototype.getPercent = function(height) {
 
 ProgressbarFilling.prototype.getPercentFromClientNum = function(clientNum) {
   clientNum = Math.abs(clientNum);
-  var percent = clientNum/this.getClientNumMax()*100;
+  var percent = (clientNum-this.getClientNumMin())/this.getClientNumMax()*100;
   return percent;
 }
 
@@ -178,6 +220,10 @@ ProgressbarFilling.prototype.setClientNumCurrent = function(clientNum) {
 ProgressbarFilling.prototype.setClientNumMax = function(clientNumMax) {
   this._setClientNumMax(clientNumMax);
   this._clientSetFillHeight(this.getClientNumCurrent());
+}
+
+ProgressbarFilling.prototype.setUserAttributes = function(clientProgressbarFillDetails) {
+  this._setUserAttributes(clientProgressbarFillDetails);
 }
 
 
@@ -262,10 +308,10 @@ ProgressbarFilling.prototype._getFillMinYOffsetFromImage = function(progressbarI
 ProgressbarFilling.prototype._createDefaultObjectsAndAttributes = function() {
   this._createFill();
 
-  this._setClientNumMin(0);
-  this._setClientNumMax(100);
-  this._setClientNumCurrent(50);
-  this._setInitialHeight(0);
+  this._setClientNumMin(this.getDefaultClientNumMin());
+  this._setClientNumMax(this.getDefaultClientNumMax());
+  this._setClientNumCurrent(this.getDefaultClientNumCurrent());
+  this._setInitialHeight(this.getDefaultInitialHeight());
 }
 
 ProgressbarFilling.prototype._createFill = function() {
@@ -275,12 +321,12 @@ ProgressbarFilling.prototype._createFill = function() {
   this._setFillMaxYOffset(progressbarOutlineImgName);
 
   this.fillObj = new Kinetic.Rect({
-    x: 0,
-    y: this.progressbarObject.getAdjustedProgressbarHeightMin(),
-    width: this.progressbarObject.getProgressbarWidth(),
-    height: 100,
-    fill: 'red',
-    name: 'filling',
+    x: this.getDefaultFillXOffset(),
+    y: this.getDefaultFillYOffset(),
+    width: this.getDefaultFillWidth(),
+    height: this.getDefaultFillHeight(),
+    fill: this.getDefaultFillColor(),
+    name: this.getDefaultFillName(),
     draggable: false
   });
 
@@ -301,12 +347,17 @@ ProgressbarFilling.prototype._clientSetFillHeight = function(clientHeight) {
 }
 
 ProgressbarFilling.prototype._setClientNumCurrent = function(clientNumCurrent) {
+  if(clientNumCurrent < this.getClientNumMin()) {
+    clientNumCurrent = this.getClientNumMin();
+  } else if(clientNumCurrent > this.getClientNumMax()) {
+    clientNumCurrent = this.getClientNumMax();
+  }
+
   this.clientNumCurrent = clientNumCurrent;
 }
 
 ProgressbarFilling.prototype._setClientNumMax = function(clientNumMax) {
   this.clientNumMax = clientNumMax;
-  //var a = 10;
 }
 
 ProgressbarFilling.prototype._setClientNumMin = function(clientNumMin) {

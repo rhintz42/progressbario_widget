@@ -66,6 +66,22 @@ ProgressbarContainer.prototype.getContainerHeightPercent = function() {
 	return this.containerHeightPercent;
 }
 
+ProgressbarContainer.prototype.getDefaultMarginBottomPercent = function() {
+	return .10;
+}
+
+ProgressbarContainer.prototype.getDefaultMarginLeftPercent = function() {
+	return .10;
+}
+
+ProgressbarContainer.prototype.getDefaultMarginRightPercent = function() {
+	return .10;
+}
+
+ProgressbarContainer.prototype.getDefaultMarginTopPercent = function() {
+	return .10;
+}
+
 ProgressbarContainer.prototype.getErrorMargin = function() {
 	return this.marginForError;
 }
@@ -195,6 +211,12 @@ ProgressbarContainer.prototype.setProgressbarYOffset = function(yOffset) {
 	this.progressbarYOffset = yOffset;
 }
 
+ProgressbarContainer.prototype.setUserAttributes = function(clientProgressbarObj) {
+  this._setUserAttributes(clientProgressbarObj);
+
+  this.progressbarObject.setUserAttributes(clientProgressbarObj);
+}
+
 
 
 
@@ -236,8 +258,10 @@ ProgressbarContainer.prototype.setProgressbarYOffset = function(yOffset) {
 //-----------------------------------------------------------------------------
 
 ProgressbarContainer.prototype._createDefaultAttributes = function() {
-  this.setMarginTopPercent(.10);
-  this.setMarginBottomPercent(.10);
+  this.setMarginBottomPercent(this.getDefaultMarginBottomPercent());
+  this.setMarginLeftPercent(this.getDefaultMarginLeftPercent());
+  this.setMarginRightPercent(this.getDefaultMarginRightPercent());
+  this.setMarginTopPercent(this.getDefaultMarginTopPercent());
 }
 
 ProgressbarContainer.prototype._createProgressbarGroup = function() {
