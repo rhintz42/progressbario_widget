@@ -8,6 +8,8 @@ padding: 0px;
 </style>
 </head>
 <body>
+
+<div id="container_1" style="float: left; border-style: solid; border-width:medium"></div>
 <div id="container" style="float: left; border-style: solid; border-width:medium"></div>
 <div id="container1" style="float: left; border-style: solid; border-width:medium"></div>
 <div id="container2" style="float: left; border-style: solid; border-width:medium"></div>
@@ -22,34 +24,85 @@ padding: 0px;
 </script>
 <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.3.1.min.js"></script>
 
+<!--
+<script src="models/anchor.js"></script>
+-->
+<!--
 <script src="models/message.js"></script>
 <script src="models/messages_container.js"></script>
-<script src="models/anchor.js"></script>
 <script src="models/progressbar_filling.js"></script>
 <script src="models/ticks_organizer.js"></script>
 <script src="models/tick.js"></script>
 <script src="models/progressbar_object.js"></script>
-<!--
-<script src="models/progressbar_models.js"></script>
--->
 <script src="models/progressbar_container.js"></script>
 <script src="models/progressbar.js"></script>
+-->
+<!--
+<script src="models/progressbario-v1.0.3.js"></script>
+-->
+
+<script src="http://progressbar-io.googlecode.com/files/progressbario-v1.0.6.js"></script>
 
 <script>
 	
 	var progressbarObj0 = new Object;
 	var progressbar0 = new Progressbar(progressbarObj0);
+
+  progressbarObj0['stageContainerID'] = 'container_1';
+  progressbarObj0.progressbarFillDetails = new Object;
+  progressbarObj0.progressbarFillDetails['clientNumMin'] = 2;
+  progressbarObj0.progressbarFillDetails['clientNumMax'] = 3;
+  progressbarObj0.progressbarFillDetails['clientNumCurrent'] = 2;
+  progressbarObj0.messages = new Array;
+  progressbarObj0.messages[0] = new Object;
+  progressbarObj0.messages[0]['name'] = 'percentComplete';
+  progressbarObj0.messages[0]['x'] = 10;
+  progressbarObj0.messages[0]['y'] = 10;
+  progressbarObj0.messages[0]['initialText'] = 'percentComplete';
+  progressbarObj0.messages[0]['fontSize'] = 20;
+  progressbarObj0.messages[1] = new Object;
+  progressbarObj0.messages[1]['name'] = 'inversePercentComplete';
+  progressbarObj0.messages[1]['x'] = 10;
+  progressbarObj0.messages[1]['y'] = 10;
+  progressbarObj0.messages[1]['initialText'] = 'percentComplete';
+  progressbarObj0.messages[1]['fontSize'] = 20;
+  progressbarObj0.messages[2] = new Object;
+  progressbarObj0.messages[2]['name'] = 'clientNumMax';
+  progressbarObj0.messages[2]['x'] = 10;
+  progressbarObj0.messages[2]['y'] = 10;
+  progressbarObj0.messages[2]['initialText'] = 'percentComplete';
+  progressbarObj0.messages[2]['fontSize'] = 20;
+  progressbarObj0.messages[3] = new Object;
+  progressbarObj0.messages[3]['name'] = 'clientNumMin';
+  progressbarObj0.messages[3]['x'] = 10;
+  progressbarObj0.messages[3]['y'] = 10;
+  progressbarObj0.messages[3]['initialText'] = 'percentComplete';
+  progressbarObj0.messages[3]['fontSize'] = 20;
+  progressbarObj0.messages[4] = new Object;
+  progressbarObj0.messages[4]['name'] = 'clientNumCurrent';
+  progressbarObj0.messages[4]['x'] = 10;
+  progressbarObj0.messages[4]['y'] = 10;
+  progressbarObj0.messages[4]['initialText'] = 'percentComplete';
+  progressbarObj0.messages[4]['fontSize'] = 20;
+  //var progressbar_01 = new Progressbar(progressbarObj0);
+
+  progressbarObj0.progressbarFillDetails['clientNumMin'] = 75;
+  progressbarObj0.progressbarFillDetails['clientNumCurrent'] = 75;
+  progressbarObj0.progressbarFillDetails['clientNumMax'] = 75;
+
+  var progressbar_02 = new Progressbar(progressbarObj0);
 	
-
-
+  
+  
 	var progressbarObj = new Object;
 	progressbarObj['stageWidth'] = 500;
 	progressbarObj['stageHeight'] = 500;
 	progressbarObj['stageContainerID'] = 'container1';
-	//progressbarObj.tickDetails = new Object;
-	//progressbarObj.tickDetails['numTicks'] = 10;
+	progressbarObj.tickDetails = new Object;
+	progressbarObj.tickDetails['numTicks'] = 3;
+  progressbarObj.tickDetails['fillColor'] = 'brown';
 	progressbarObj.messages = new Array;
-  /*
+  
 	progressbarObj.messages[0] = new Object;
 	progressbarObj.messages[0]['name'] = 'percentComplete';
   progressbarObj.messages[0]['x'] = 10;
@@ -59,7 +112,7 @@ padding: 0px;
   progressbarObj.messages[0]['fontSize'] = 30;
   progressbarObj.messages[0]['fontFamily'] = 'Calibri';
   progressbarObj.messages[0]['fontColor'] = 'green';
-	*/
+	
   progressbarObj.messages[1] = new Object;
 	progressbarObj.messages[1]['name'] = 'inversePercentComplete';
   progressbarObj.messages[1]['x'] = 10;
@@ -108,7 +161,8 @@ padding: 0px;
 
   var myJSONObj = JSON.parse(myJSONText);
   var progressbar = new Progressbar(myJSONObj);
-
+  
+  var prog = new Progressbar({"progressbarFillDetails":{"clientNumCurrent":60,"clientNumMin":0,"clientNumMax":100},"messages":[{"name":"percentComplete","x":20,"y":20,"title":"Percent Complete","initialText":"percentComplete","fontSize":30,"fontFamily":"Calibri","fontColor":"black"}]});
   //var progressbar = new Progressbar(progressbarObj);
 
   //var pBarObj = new Object;
@@ -116,15 +170,15 @@ padding: 0px;
   //THERES REALLY NO REASON FOR A SET METHOD BECAUSE OTHER CLIENTS
   //	SHOULDN"T BE REALLY CHANGING THE PROGRESSBAR DYNAMICALLY
   //	EXCEPT FOR A COUPLE THINGS LIKE MAYBE ADDING TO FILLING
-  /*
-  pBarObj['topMarginPercent'] = 100;
-  pBarObj['bottomMarginPercent'] = 100;
-  pBarObj['rightMarginPercent'] = 100;
-  pBarObj['leftMarginPercent'] = 100;
-  pBarObj.messages
+  
+  //pBarObj['topMarginPercent'] = 100;
+  //pBarObj['bottomMarginPercent'] = 100;
+  //pBarObj['rightMarginPercent'] = 100;
+  //pBarObj['leftMarginPercent'] = 100;
+  //pBarObj.messages
 
-  progressbar.setUserAttributes(pBarObj);
-  */
+  //progressbar.setUserAttributes(pBarObj);
+  
   //progressbar.setClientNumCurrent(220);
   //progressbar.addToClientNumCurrent(2);
 	

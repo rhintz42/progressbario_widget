@@ -39,7 +39,7 @@ ProgressbarFilling.prototype.getClientNumCurrent = function() {
 
 ProgressbarFilling.prototype.getClientNumFromPercent = function(percent) {
   percent = Math.abs(percent);
-  var clientNum = Math.round(this.getClientNumMax()*(percent/100));
+  var clientNum = Math.round((this.getClientNumMax()-this.getCleintNumMin())*(percent/100)+this.getCleintNumMin());
   return clientNum;
 }
 
@@ -57,6 +57,10 @@ ProgressbarFilling.prototype.getClientNumToFillHeight = function(clientHeight) {
   clientHeight *= -1;
   var fillRange = this.getFillMaxYOffset()-this.getFillMinYOffset();
   var clientRange = this.getClientNumMax()-this.getClientNumMin();
+  if(clientRange == 0) {
+    clientRange = 1;
+    clientHeight = -1;
+  }
   var clientAdjustedHeight = (clientHeight * (fillRange/clientRange)) - this.getFillMinYOffset();
   return clientAdjustedHeight;
 }
@@ -164,7 +168,10 @@ ProgressbarFilling.prototype.getPercent = function(height) {
 
 ProgressbarFilling.prototype.getPercentFromClientNum = function(clientNum) {
   clientNum = Math.abs(clientNum);
-  var percent = (clientNum-this.getClientNumMin())/this.getClientNumMax()*100;
+  if((this.getClientNumMax()-this.getClientNumMin()) == 0) {
+    return 100;
+  }
+  var percent = (clientNum-this.getClientNumMin())/(this.getClientNumMax()-this.getClientNumMin())*100;
   return percent;
 }
 
@@ -377,6 +384,9 @@ ProgressbarFilling.prototype._setFillColor = function(color) {
 ProgressbarFilling.prototype._setFillHeight = function(height) {
   height = Math.abs(height);
   var newHeight = height*-1;
+
+  var max = this.getFillMaxYOffset();
+  var min = this.getFillMinYOffset();
 
   if(height > this.getFillMaxYOffset()) {
     newHeight = this.getFillMaxYOffset()*-1;

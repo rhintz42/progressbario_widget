@@ -216,12 +216,15 @@ Tick.prototype._addToTickOrganizerGroup = function(tickObj) {
 //-----------------------------------------------------------------------------
 
 Tick.prototype._createDefaultAttributes = function() {
+  var color = this.getDefaultFillColor();
+  var stroke = this.getDefaultStroke();
+
   this.tick = new Kinetic.Rect({
     x: this.getDefaultXOffset(),
     y: this.getDefaultYOffset(),
     width: this.getDefaultWidth(),
     height: this.getDefaultHeight(),
-    stroke: this.getDefaultStroke(),
+    stroke: this.getDefaultFillColor(),
     fill: this.getDefaultFillColor(),
     strokeWidth: this.getDefaultStrokeWidth(),
     name: this.getDefaultName()
